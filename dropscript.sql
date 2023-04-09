@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS "comments";
+DROP TABLE IF EXISTS "reviews";
+DROP TABLE IF EXISTS "games";
+DROP TABLE IF EXISTS "users";
+DROP TYPE IF EXISTS rating_value;
