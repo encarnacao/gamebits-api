@@ -1,5 +1,6 @@
 import commentRepository from "../repositories/commentRepository.js";
 import errors from "../errors/index.js";
+import reviewRepository from "../repositories/reviewRepository.js";
 
 async function validateUser(id: number, userId: number) {
 	const commentEntry = await commentRepository.getCommentById(id);
@@ -14,6 +15,8 @@ async function createComment(
 	userId: number,
 	reviewId: number
 ) {
+	const review = await reviewRepository.getReviewById(reviewId);
+	if (!review) throw errors.notFoundError();
 	const commentEntry = await commentRepository.postComment(
 		reviewId,
 		userId,
@@ -23,12 +26,12 @@ async function createComment(
 }
 
 async function deleteComment(id: number, userId: number) {
-	validateUser(id, userId);
+	await validateUser(id, userId);
 	await commentRepository.deleteComment(id);
 }
 
 async function editComment(id: number, userId: number, newComment: string) {
-	validateUser(id, userId);
+	await validateUser(id, userId);
 	const editComment = await commentRepository.editComment(id, newComment);
 	return editComment;
 }
