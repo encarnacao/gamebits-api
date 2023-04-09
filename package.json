@@ -8,8 +8,9 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "tsc",
 		"dev": "tsx watch src/app.ts",
-		"dbpull": "prisma db pull",
-		"generate": "prisma generate"
+		"prisma:pull": "prisma db pull",
+		"prisma:generate": "prisma generate",
+		"prisma:migrate": "prisma migrate dev --name init"
 	},
 	"keywords": [],
 	"author": "",
