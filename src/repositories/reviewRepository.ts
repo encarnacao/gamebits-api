@@ -65,8 +65,22 @@ async function getAllReviews() {
 					name: true,
 				},
 			},
-			comments: true,
+			comments: {
+				select: {
+					id: true,
+					text: true,
+					users: {
+						select: {
+							id: true,
+							name: true,
+							picture_url: true,
+						},
+					},
+				},
+				orderBy: { created_at: "desc" },
+			},
 		},
+		orderBy: { created_at: "desc" },
 	});
 }
 

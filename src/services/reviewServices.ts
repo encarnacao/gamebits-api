@@ -14,17 +14,27 @@ async function createReview(body: ReviewBody, userId: number) {
 	return reviewEntry;
 }
 
-async function getAll(){
+async function getAll() {
 	const reviewsEntity = await reviewRepository.getAllReviews();
-	const reviews = reviewsEntity.map((review) => ({
-		id: review.id,
-		username_id: review.users.id,
-		username: review.users.name,
-		picture_url: review.users.picture_url,
-		game: review.games.name,
-		rating: review.rating,
-		review_text: review.review
-	}));
+	const reviews = reviewsEntity.map((review) => {
+		const comments = review.comments.map((comment) => ({
+			id: comment.id,
+			username_id: comment.users.id,
+			username: comment.users.name,
+			picture_url: comment.users.picture_url,
+			comment_text: comment.text,
+		}));
+		return {
+			id: review.id,
+			username_id: review.users.id,
+			username: review.users.name,
+			picture_url: review.users.picture_url,
+			game: review.games.name,
+			rating: review.rating,
+			review_text: review.review,
+			comments,
+		};
+	});
 	return reviews;
 }
 
