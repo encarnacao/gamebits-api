@@ -53,7 +53,6 @@ export type ErrorType = {
     name: string;
     message: string;
     email?: string;
-    file?: string;
 }
 
 export default {

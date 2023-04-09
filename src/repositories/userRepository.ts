@@ -3,9 +3,7 @@ const prisma = new PrismaClient();
 
 async function createUser(user: Prisma.usersCreateInput) {
 	return await prisma.users.create({
-		data: {
-			...user,
-		},
+		data: user,
 	});
 }
 
