@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import userServices from "../services/userServices.js";
+import userServices, { SignInBody } from "../services/userServices.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import errors from "../errors/index.js";
+dotenv.config();
 
 async function createUser(req: Request, res: Response, next: NextFunction) {
 	try {
@@ -7,9 +11,21 @@ async function createUser(req: Request, res: Response, next: NextFunction) {
 		delete create.password;
 		res.send(create);
 	} catch (err) {
-		console.log(err);
-		res.status(500).send({ message: "Internal Server Error" });
+		next(err);
 	}
 }
 
-export default { createUser };
+async function signIn(req: Request, res: Response, next: NextFunction) {
+	const userData = req.body as SignInBody;
+	if(!userData.email || !userData.password)
+		throw errors.badRequestError("Email and password are required");
+	try {
+		const user = await userServices.getUserByEmail(userData);
+		const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+		res.send({ token });
+	} catch (err) {
+		next(err);
+	}
+}
+
+export default { createUser, signIn };

@@ -12,4 +12,6 @@ userRouter.post(
 	userController.createUser
 );
 
+userRouter.post("/signin", userController.signIn);
+
 export default userRouter;
