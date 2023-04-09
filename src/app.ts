@@ -1,19 +1,16 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, json } from "express";
+import "express-async-errors";
 import cors from "cors";
 import dotenv from "dotenv";
-import userRouter from "./routers/userRouters.js";
+import router from "./routers/index.js";
 
 dotenv.config();
 
 const app = express();
 
-app.get("/", (req: Request, res: Response) => {
-	res.send("Hello World");
-});
-
 app.use(cors());
-app.use(express.json());
-app.use(userRouter);
+app.use(json());
+app.use(router);
 
 const PORT = process.env.PORT || 5000;
 
