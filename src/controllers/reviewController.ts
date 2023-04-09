@@ -15,8 +15,9 @@ async function createReview(req: Request, res: Response, next: NextFunction) {
 }
 
 async function getAll(req: Request, res: Response, next: NextFunction) {
+	const queryParams = req.query;
 	try {
-		const reviews = await reviewServices.getAll();
+		const reviews = await reviewServices.get(queryParams);
 		res.status(200).send(reviews);
 	} catch (err) {
 		next(err);

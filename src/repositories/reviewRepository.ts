@@ -46,7 +46,15 @@ async function getReviewById(id: number) {
 	});
 }
 
-async function getAllReviews() {
+async function getReviews(queryParams: { game?: string; user?: string }) {
+	const { game, user } = queryParams;
+	let where = {};
+	if (game) {
+		where = { ...where, games: { name: game } };
+	}
+	if (user) {
+		where = { ...where, users: { name: user } };
+	}
 	return await prisma.reviews.findMany({
 		select: {
 			id: true,
@@ -81,7 +89,8 @@ async function getAllReviews() {
 			},
 		},
 		orderBy: { created_at: "desc" },
+		where: where,
 	});
 }
 
-export default { createReview, getAllReviews, getReviewById };
+export default { createReview, getReviews, getReviewById };

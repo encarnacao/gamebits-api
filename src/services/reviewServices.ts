@@ -38,11 +38,12 @@ async function createReview(body: ReviewBody, userId: number) {
 	return reviewEntry;
 }
 
-async function getAll() {
-	const reviewsEntity = await reviewRepository.getAllReviews();
+async function get(queryParams: {user?: string; game?: string}) {
+	const reviewsEntity = await reviewRepository.getReviews(queryParams);
 	const reviews = formatReviewOutput(reviewsEntity);
 	return reviews;
 }
+
 
 type reviewsEntity = {
 	rating: Decimal;
@@ -68,4 +69,4 @@ type reviewsEntity = {
 	};
 };
 
-export default { createReview, getAll };
+export default { createReview, get };
