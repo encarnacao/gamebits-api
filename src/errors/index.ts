@@ -1,4 +1,4 @@
-function unprocessableEntityError(message:string[]) {
+function unprocessableEntityError(message: string[]) {
 	return {
 		status: 422,
 		name: "UnprocessableEntityError",
@@ -6,7 +6,7 @@ function unprocessableEntityError(message:string[]) {
 	};
 }
 
-function emailConflictError(email:string) {
+function emailConflictError(email: string) {
 	return {
 		status: 409,
 		name: "EmailConflictError",
@@ -39,7 +39,7 @@ function invalidCredentialsError() {
 	};
 }
 
-function badRequestError(message:string) {
+function badRequestError(message: string) {
 	return {
 		status: 400,
 		name: "BadRequestError",
@@ -47,13 +47,20 @@ function badRequestError(message:string) {
 	};
 }
 
+function forbiddenError() {
+	return {
+		status: 403,
+		name: "ForbiddenError",
+		message: "You are not allowed to do this",
+	};
+}
 
 export type ErrorType = {
-    status: number;
-    name: string;
-    message: string;
-    email?: string;
-}
+	status: number;
+	name: string;
+	message: string;
+	email?: string;
+};
 
 export default {
 	unprocessableEntityError,
@@ -62,4 +69,5 @@ export default {
 	notFoundError,
 	invalidCredentialsError,
 	badRequestError,
+	forbiddenError,
 };
