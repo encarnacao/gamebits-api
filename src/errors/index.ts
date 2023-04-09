@@ -1,4 +1,4 @@
-function unprocessableEntityError(message:string) {
+function unprocessableEntityError(message:string[]) {
 	return {
 		status: 422,
 		name: "UnprocessableEntityError",
