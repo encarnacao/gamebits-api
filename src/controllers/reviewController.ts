@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { ReviewBody } from "../schemas/reviewSchema.js";
-import errors from "../errors/index.js";
 import reviewServices from "../services/reviewServices.js";
 
 async function createReview(req: Request, res: Response, next: NextFunction) {

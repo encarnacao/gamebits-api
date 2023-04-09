@@ -1,9 +1,9 @@
+import "dotenv/config";
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import errors from "../errors/index.js";
 import userRepository from "../repositories/userRepository.js";
-dotenv.config();
+
 
 async function validateCredentials(
 	req: Request,
