@@ -13,4 +13,6 @@ reviewRouter.post(
 	reviewController.createReview
 );
 
+reviewRouter.get("/", reviewController.getAll);
+
 export default reviewRouter;

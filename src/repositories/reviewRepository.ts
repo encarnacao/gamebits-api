@@ -22,4 +22,28 @@ async function createReview(
 	});
 }
 
-export default { createReview };
+async function getAllReviews(){
+	return await prisma.reviews.findMany({
+		select: {
+			id: true,
+			rating: true,
+			review: true,
+			users: {
+				select: {
+					id: true,
+					name: true,
+					picture_url: true,
+				},
+				
+			},
+			games: {
+				select: {
+					id: true,
+					name: true,
+				}
+			}
+		}
+	});
+}
+
+export default { createReview, getAllReviews };

@@ -5,7 +5,6 @@ import reviewServices from "../services/reviewServices.js";
 
 async function createReview(req: Request, res: Response, next: NextFunction) {
 	const body = req.body as ReviewBody;
-	console.log(body);
 	const userId = Number(res.locals.user.id);
 	try {
 		const review = await reviewServices.createReview(body, userId);
@@ -15,4 +14,13 @@ async function createReview(req: Request, res: Response, next: NextFunction) {
 	}
 }
 
-export default { createReview };
+async function getAll(req: Request, res: Response, next: NextFunction) {
+	try {
+		const reviews = await reviewServices.getAll();
+		res.status(200).send(reviews);
+	} catch (err) {
+		next(err);
+	}
+}
+
+export default { createReview, getAll };

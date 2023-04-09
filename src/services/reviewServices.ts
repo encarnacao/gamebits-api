@@ -14,4 +14,18 @@ async function createReview(body: ReviewBody, userId: number) {
 	return reviewEntry;
 }
 
-export default { createReview };
+async function getAll(){
+	const reviewsEntity = await reviewRepository.getAllReviews();
+	const reviews = reviewsEntity.map((review) => ({
+		id: review.id,
+		username_id: review.users.id,
+		username: review.users.name,
+		picture_url: review.users.picture_url,
+		game: review.games.name,
+		rating: review.rating,
+		review_text: review.review
+	}));
+	return reviews;
+}
+
+export default { createReview, getAll };
