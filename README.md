@@ -10,7 +10,7 @@ This is a simple project to study TypeScript. It's an API of a review aggregator
 2. Install dependencies with `npm install`
 3. Create a PostgreSQL database, there's a script in root folder to create the database and the tables
 4. Configure .env file with your database credentials
-5. Run `npm run prisma:generate` to generate the Prisma Client
+5. Run `npm run generate` to generate the Prisma Client
 6. Run `npm run dev` to start the server
 
 ## Simple API Documentation
