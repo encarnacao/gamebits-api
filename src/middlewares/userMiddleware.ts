@@ -6,7 +6,7 @@ async function checkConflict(req: Request, res: Response, next: NextFunction) {
 	const { email } = req.body;
 	try {
 		const user = await userRepository.findUserByEmail(email);
-		if (user.id) {
+		if (user) {
 			throw errors.emailConflictError(email);
 		}
 		next();
