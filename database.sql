@@ -8,38 +8,15 @@ CREATE TABLE "users" (
     CONSTRAINT "users_pk" PRIMARY KEY ("id")
 );
 
-CREATE TYPE rating_value AS ENUM (
-    '0',
-    '0.5',
-    '1',
-    '1.5',
-    '2',
-    '2.5',
-    '3',
-    '3.5',
-    '4',
-    '4.5',
-    '5',
-    '5.5',
-    '6',
-    '6.5',
-    '7',
-    '7.5',
-    '8',
-    '8.5',
-    '9',
-    '9.5',
-    '10'
-);
-
 CREATE TABLE "reviews" (
     "id" serial NOT NULL,
     "user_id" int NOT NULL,
     "game_id" int NOT NULL,
-    "rating" rating_value NOT NULL,
+    rating NUMERIC(2,1) NOT NULL,
     "review" TEXT NOT NULL,
     "created_at" TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT "reviews_pk" PRIMARY KEY ("id")
+    CONSTRAINT "reviews_pk" PRIMARY KEY ("id"),
+    CONSTRAINT rating_range CHECK (rating >= 0 AND rating <= 10 AND MOD(rating, 0.5) = 0)
 );
 
 CREATE TABLE "games" (
