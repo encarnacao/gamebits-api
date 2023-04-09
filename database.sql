@@ -21,7 +21,7 @@ CREATE TABLE "reviews" (
 
 CREATE TABLE "games" (
     "id" serial NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" TEXT NOT NULL UNIQUE,
     CONSTRAINT "games_pk" PRIMARY KEY ("id")
 );
 
