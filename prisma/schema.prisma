@@ -19,7 +19,7 @@ model comments {
 
 model games {
   id      Int       @id(map: "games_pk") @default(autoincrement())
-  name    String    @unique
+  name    String    @unique(map: "unique_name")
   reviews reviews[]
 }
 
