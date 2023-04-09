@@ -2,7 +2,11 @@
 
 Proof of Concept for TypeScript Study
 
-This is a simple project to study TypeScript. It's an API of a review aggregator for videogames with a simple CRUD of reviews and users, using Prisma as ORM and PostgreSQL as database.
+This is a simple project to study TypeScript. It's an API of a review aggregator for videogames with a simple CRUD of reviews and users, using Prisma as ORM and PostgreSQL as database. It also has a simple authentication system using JWT. Other technologies used in this project are:
+
+- Express
+- Express Async Erros
+- JOI
 
 ## How to run
 
@@ -194,3 +198,23 @@ Response - `200 OK`
 Response - `204 NO CONTENT`
 
 </details>
+
+## Features
+
+- [x] Create User
+- [x] Login User
+- [x] Create Review
+- [x] Comment Review
+- [x] Delete Comments
+- [x] Edit Comments
+
+## Planned Features
+I'm planning to continue this project, so I'll add more features in the future.
+
+- [ ] Edit Review
+- [ ] Delete Review
+- [ ] Follow Users
+- [ ] Add completion time to reviews
+- [ ] Add review images
+- [ ] Integrate with an Game Database API to get more information about games
+- [ ] Implement testing
