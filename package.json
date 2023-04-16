@@ -8,9 +8,13 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "tsc",
 		"dev": "tsx watch src/app.ts",
-		"prisma:pull": "prisma db pull",
-		"prisma:generate": "prisma generate",
-		"prisma:migrate": "prisma migrate dev --name init"
+		"dev:pull": "prisma db pull",
+		"dev:generate": "prisma generate",
+		"dev:migrate": "prisma migrate dev --name init",
+		"dev:seed": "prisma db seed"
+	},
+	"prisma": {
+		"seed": "ts-node prisma/seed.ts"
 	},
 	"keywords": [],
 	"author": "",
@@ -32,6 +36,7 @@
 		"@types/jsonwebtoken": "^9.0.1",
 		"@types/node": "^18.15.11",
 		"prisma": "^4.12.0",
+		"ts-node": "^10.9.1",
 		"tsx": "^3.12.6",
 		"typescript": "^5.0.4"
 	}
