@@ -14,7 +14,8 @@ This started as a simple project to study TypeScript, as a Proof of Concept, and
 3. Configure .env file with your database credentials, you need to create a PostgreSQL database and a user with access to it.
 4. Create a PostgreSQL database using migrations with `npm run prisma:migrate`
 5. Run `npm run prisma:generate` to generate the Prisma Client
-6. Run `npm run dev` to start the server
+6. Optional: You can seed the database with some data using `npm run prisma:seed`, this will create a user with email `user@email.com` and password `example`
+7. Run `npm run dev` to start the server
 
 ## Simple API Documentation
 
