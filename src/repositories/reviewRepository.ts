@@ -48,7 +48,7 @@ async function getReviewById(id: number) {
 
 async function getReviews(queryParams: { game?: string; user?: string }) {
 	const { game, user } = queryParams;
-	let where = {};
+	let where: whereParams = {};
 	if (game) {
 		where = { ...where, games: { name: game } };
 	}
@@ -92,5 +92,10 @@ async function getReviews(queryParams: { game?: string; user?: string }) {
 		where: where,
 	});
 }
+
+type whereParams = {
+	games?: { name: string };
+	users?: { name: string };
+};
 
 export default { createReview, getReviews, getReviewById };
