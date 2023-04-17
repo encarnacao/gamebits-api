@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, type users } from "@prisma/client";
 import bcrypt from "bcrypt";
 import errors from "../errors/index.js";
 import userRepository from "../repositories/userRepository.js";
@@ -25,6 +25,6 @@ async function getUserByEmail(body: SignInBody) {
 	return user;
 }
 
-export type SignInBody = Pick<Prisma.usersCreateInput, "email" | "password">;
+export type SignInBody = Pick<users, "email" | "password">;
 
 export default { createUser, getUserByEmail };
