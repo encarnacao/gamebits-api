@@ -4,16 +4,26 @@ import cors from "cors";
 import express, { json } from "express";
 import router from "./routers/index.js";
 import { handleApplicationErrors } from "./middlewares/errorMiddleware.js";
+import { connectDb, disconnectDB, loadEnv } from "@/config";
 
 const app = express();
 
-app.use(cors());
-app.use(json());
-app.use(router);
-app.use(handleApplicationErrors);
+loadEnv();
 
-const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`);
-});
+app.use(cors())
+   .use(json())
+   .use(router)
+   .use(handleApplicationErrors);
+
+
+export function init(){
+	connectDb();
+	return Promise.resolve(app);
+}
+
+export async function close(): Promise<void> {
+	await disconnectDB();
+}
+
+export default app;
