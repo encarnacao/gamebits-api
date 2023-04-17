@@ -1,13 +1,13 @@
 {
-	"name": "typescript-poc",
-	"version": "1.0.0",
-	"description": "Proof of Concept for TypeScript Study",
+	"name": "gamerbits-api",
+	"version": "0.5.0",
+	"description": "A simple Game Review Aggregator API",
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "tsc",
-		"dev": "tsx watch src/app.ts",
+		"dev": "tsx watch src/server.ts",
 		"dev:pull": "prisma db pull",
 		"dev:generate": "prisma generate",
 		"dev:migrate": "prisma migrate dev --name init",
