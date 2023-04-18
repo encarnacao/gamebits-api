@@ -1,7 +1,7 @@
 import { Prisma, type users } from "@prisma/client";
 import bcrypt from "bcrypt";
-import errors from "../errors/index.js";
-import userRepository from "../repositories/userRepository.js";
+import errors from "@/errors";
+import userRepository from "@/repositories/userRepository";
 
 async function createUser(user: Prisma.usersCreateInput) {
 	const hashedPassword = bcrypt.hashSync(user.password, 10);

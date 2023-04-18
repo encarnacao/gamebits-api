@@ -1,6 +1,6 @@
-import commentRepository from "../repositories/commentRepository.js";
-import errors from "../errors/index.js";
-import reviewRepository from "../repositories/reviewRepository.js";
+import errors from "@/errors";
+import commentRepository from "@/repositories/commentRepository";
+import reviewRepository from "@/repositories/reviewRepository";
 
 async function validateUser(id: number, userId: number) {
 	const commentEntry = await commentRepository.getCommentById(id);

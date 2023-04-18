@@ -1,6 +1,6 @@
 import { Decimal } from "@prisma/client/runtime/index.js";
-import gameRepository from "../repositories/gameRepository.js";
-import reviewRepository from "../repositories/reviewRepository.js";
+import reviewRepository from "@/repositories/reviewRepository";
+import gameRepository from "@/repositories/gameRepository";
 import { ReviewBody } from "../schemas/reviewSchema.js";
 
 function formatReviewOutput(review: reviewsEntity[]) {

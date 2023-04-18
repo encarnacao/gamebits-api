@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/config";
 
 async function postComment(reviewId: number, userId: number, comment: string) {
 	return await prisma.comments.create({

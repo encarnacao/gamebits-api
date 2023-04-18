@@ -1,5 +1,5 @@
-import { PrismaClient, type Prisma } from "@prisma/client";
-const prisma = new PrismaClient();
+import { Prisma } from "@prisma/client";
+import { prisma } from "@/config";
 
 async function createUser(user: Prisma.usersCreateInput) {
 	return await prisma.users.create({
