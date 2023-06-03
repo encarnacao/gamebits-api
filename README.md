@@ -1,4 +1,4 @@
-# GamerBits - A Review Aggregator for Videogames
+# GameBits - A Review Aggregator for Videogames
 
 This started as a simple project to study TypeScript, as a Proof of Concept, and I plan to keep working on it. It's an API of a review aggregator for videogames with a simple CRUD of reviews and users, using Prisma as ORM and PostgreSQL as database. It also has a simple authentication system using JWT. Other technologies used in this project are:
 
