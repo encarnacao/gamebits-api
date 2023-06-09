@@ -36,7 +36,7 @@ model games_tags {
   id         Int      @id @default(autoincrement())
   game_id    Int
   tag_id     Int
-  count      BigInt
+  count      BigInt   @default(0)
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
   games      games    @relation(fields: [game_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "games_tags_game_id_foreign")
@@ -44,15 +44,17 @@ model games_tags {
 }
 
 model libraries {
-  id         Int      @id @default(autoincrement())
-  user_id    Int
-  game_id    Int
-  finished   Boolean
-  platinum   Boolean
-  created_at DateTime @default(now()) @db.Timestamp(6)
-  updated_at DateTime @default(now()) @db.Timestamp(6)
-  games      games    @relation(fields: [game_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "libraries_game_id_foreign")
-  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "libraries_user_id_foreign")
+  id              Int      @id @default(autoincrement())
+  user_id         Int
+  game_id         Int
+  finished        Boolean  @default(false)
+  completion_time Decimal? @db.Decimal(3, 1)
+  platinum        Boolean  @default(false)
+  wishlist        Boolean  @default(false)
+  created_at      DateTime @default(now()) @db.Timestamp(6)
+  updated_at      DateTime @default(now()) @db.Timestamp(6)
+  games           games    @relation(fields: [game_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "libraries_game_id_foreign")
+  users           users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "libraries_user_id_foreign")
 }
 
 model reviews {
@@ -60,7 +62,7 @@ model reviews {
   user_id    Int
   game_id    Int
   rating     Decimal  @db.Decimal(3, 1)
-  votes      BigInt?  @default(0)
+  votes      BigInt   @default(0)
   text       String   @db.VarChar(1000)
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
@@ -81,7 +83,7 @@ model users {
   username                       String      @unique @db.VarChar(30)
   email                          String      @unique @db.VarChar(255)
   password                       String      @db.VarChar(60)
-  image_url                      String
+  image_url                      String      @default("https://pbs.twimg.com/media/EhulGMdVoAIgBeN?format=png&name=small")
   created_at                     DateTime    @default(now()) @db.Timestamp(6)
   updated_at                     DateTime    @default(now()) @db.Timestamp(6)
   follow_follow_followerTousers  follow[]    @relation("follow_followerTousers")
