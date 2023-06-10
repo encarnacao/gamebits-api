@@ -1,17 +1,11 @@
+import { searchQuery } from "@/schemas/gamesSchemas";
 import gamesSerivices from "@/services/gamesServices";
 import { Request, Response, NextFunction } from "express";
 
-interface searchGameQuery {
-  name?: string;
-}
-
 async function searchGame(req: Request, res: Response, next: NextFunction) {
-  const { name: gameName } = req.query as searchGameQuery;
-  if (!gameName){
-    return res.sendStatus(400);
-  }
+  const query = req.query as unknown as searchQuery;
   try {
-    const games = await gamesSerivices.searchGame(gameName);
+    const games = await gamesSerivices.searchGame(query.name);
     res.status(200).json(games);
   } catch (err) {
     next(err);
