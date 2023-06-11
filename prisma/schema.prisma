@@ -19,9 +19,9 @@ model follow {
 
 model games {
   id                     Int          @id @default(autoincrement())
-  igdb_id                Int
+  igdb_id                Int          @unique
   name                   String       @db.VarChar(255)
-  cover_id               String       @db.VarChar(255)
+  cover_url              String       @db.VarChar(255)
   original_realease_date DateTime     @db.Date
   platforms              String       @db.VarChar(255)
   genres                 String?      @db.VarChar(255)
@@ -62,12 +62,23 @@ model reviews {
   user_id    Int
   game_id    Int
   rating     Decimal  @db.Decimal(3, 1)
-  votes      BigInt   @default(0)
   text       String   @db.VarChar(1000)
   created_at DateTime @default(now()) @db.Timestamp(6)
   updated_at DateTime @default(now()) @db.Timestamp(6)
   games      games    @relation(fields: [game_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "reviews_game_id_foreign")
   users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "reviews_user_id_foreign")
+  votes      votes[]
+}
+
+model votes {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  review_id  Int
+  up_vote    Boolean
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+  reviews    reviews  @relation(fields: [review_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "votes_review_id_foreign")
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "votes_user_id_foreign")
 }
 
 model tags {
@@ -90,4 +101,5 @@ model users {
   follow_follow_followingTousers follow[]    @relation("follow_followingTousers")
   libraries                      libraries[]
   reviews                        reviews[]
+  votes                          votes[]
 }
