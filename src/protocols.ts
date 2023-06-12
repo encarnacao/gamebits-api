@@ -34,7 +34,7 @@ interface platform {
   id: number;
 }
 
-export interface gameParams {
+export interface idParams {
   id: number;
 }
 
@@ -50,10 +50,9 @@ export interface ErrorType {
 }
 
 export interface Session {
-	email: string;
-	iat: number;
-};
-
+  email: string;
+  iat: number;
+}
 
 export type GameEntity = Pick<
   Prisma.gamesCreateInput,
