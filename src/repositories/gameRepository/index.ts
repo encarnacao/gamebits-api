@@ -35,6 +35,13 @@ async function searchIGDB(igdb_id: number) {
   }
 }
 
+async function searchById(id: number) {
+  const game = await prisma.games.findUnique({
+    where: { id },
+  });
+  return game;
+}
+
 async function createGameEntry(game: Prisma.gamesCreateInput) {
   const gameEntry = await prisma.games.create({
     data: game,
@@ -44,4 +51,5 @@ async function createGameEntry(game: Prisma.gamesCreateInput) {
 
 export default {
   getGameByIGDBId,
+  searchById
 };
