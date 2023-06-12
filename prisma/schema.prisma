@@ -7,14 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model follow {
-  id                            Int      @id @default(autoincrement())
-  follower                      Int
-  following                     Int
-  created_at                    DateTime @default(now()) @db.Timestamp(6)
-  updated_at                    DateTime @default(now()) @db.Timestamp(6)
-  users_follow_followerTousers  users    @relation("follow_followerTousers", fields: [follower], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "follow_follower_foreign")
-  users_follow_followingTousers users    @relation("follow_followingTousers", fields: [following], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "follow_following_foreign")
+model follows {
+  id                             Int      @id @default(autoincrement())
+  following                      Int
+  followed                       Int
+  created_at                     DateTime @default(now()) @db.Timestamp(6)
+  updated_at                     DateTime @default(now()) @db.Timestamp(6)
+  users_follows_followingTousers users    @relation("follows_followingTousers", fields: [following], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "follows_following_foreign")
+  users_follows_followedTousers  users    @relation("follows_followedTousers", fields: [followed], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "follows_followed_foreign")
 }
 
 model games {
@@ -90,16 +90,16 @@ model tags {
 }
 
 model users {
-  id                             Int         @id @default(autoincrement())
-  username                       String      @unique @db.VarChar(30)
-  email                          String      @unique @db.VarChar(255)
-  password                       String      @db.VarChar(60)
-  image_url                      String      @default("https://pbs.twimg.com/media/EhulGMdVoAIgBeN?format=png&name=small")
-  created_at                     DateTime    @default(now()) @db.Timestamp(6)
-  updated_at                     DateTime    @default(now()) @db.Timestamp(6)
-  follow_follow_followerTousers  follow[]    @relation("follow_followerTousers")
-  follow_follow_followingTousers follow[]    @relation("follow_followingTousers")
-  libraries                      libraries[]
-  reviews                        reviews[]
-  votes                          votes[]
+  id                               Int         @id @default(autoincrement())
+  username                         String      @unique @db.VarChar(30)
+  email                            String      @unique @db.VarChar(255)
+  password                         String      @db.VarChar(60)
+  image_url                        String      @default("https://pbs.twimg.com/media/EhulGMdVoAIgBeN?format=png&name=small")
+  created_at                       DateTime    @default(now()) @db.Timestamp(6)
+  updated_at                       DateTime    @default(now()) @db.Timestamp(6)
+  follows_follows_followedTousers  follows[]   @relation("follows_followedTousers")
+  follows_follows_followingTousers follows[]   @relation("follows_followingTousers")
+  libraries                        libraries[]
+  reviews                          reviews[]
+  votes                            votes[]
 }
