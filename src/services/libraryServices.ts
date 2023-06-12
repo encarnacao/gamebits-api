@@ -9,7 +9,7 @@ async function validateGame(gameId: number) {
   }
 }
 
-async function validateLibrary(userId: number, gameId: number) {
+async function validateLibraryEntry(userId: number, gameId: number) {
   const library = await libraryRepository.searchLibraryEntry(userId, gameId);
   if (!library) {
     throw errors.notFoundError();
@@ -32,7 +32,7 @@ export async function addGameToLibrary(
 }
 
 export async function removeFromLibrary(userId: number, libraryId: number) {
-  const library = await validateLibrary(userId, libraryId);
+  const library = await validateLibraryEntry(userId, libraryId);
   await libraryRepository.removeGameFromLibrary(library.id);
 }
 
