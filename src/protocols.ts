@@ -54,6 +54,11 @@ export interface Session {
   iat: number;
 }
 
+export interface LibraryUpdate {
+  status: string;
+  completion_time?: number;
+}
+
 export type GameEntity = Pick<
   Prisma.gamesCreateInput,
   | "igdb_id"

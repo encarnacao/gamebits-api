@@ -1,6 +1,8 @@
 import errors from "@/errors";
+import { LibraryUpdate } from "@/protocols";
 import gameRepository from "@/repositories/gameRepository";
 import libraryRepository from "@/repositories/libraryRepository";
+import { Prisma, libraries } from "@prisma/client";
 
 async function validateGame(gameId: number) {
   const game = await gameRepository.searchById(gameId);
@@ -15,6 +17,32 @@ async function validateLibraryEntry(userId: number, gameId: number) {
     throw errors.notFoundError();
   }
   return library;
+}
+
+async function validateUpdate(entry: libraries, body: LibraryUpdate) {
+  const updateInput: Prisma.librariesUpdateInput = {};
+  if (body.status === "platinum" && !entry.finished) {
+    throw errors.badRequestError(
+      "You can't have platinum trophy of a game you haven't finished"
+    );
+  }
+  if (body.status === "completion_time") {
+    if (!entry.finished) {
+      throw errors.badRequestError(
+        "You can't have a completion time of a game you haven't finished"
+      );
+    }
+    if (!body.completion_time) {
+      throw errors.unprocessableEntityError([
+        "You must provide a completion time",
+      ]);
+    }
+    updateInput.completion_time = body.completion_time;
+  } else {
+    updateInput[body.status as keyof Prisma.librariesUpdateInput] =
+      !entry[body.status as keyof libraries];
+  }
+  return updateInput;
 }
 
 export async function addGameToLibrary(
@@ -36,8 +64,23 @@ export async function removeFromLibrary(userId: number, libraryId: number) {
   await libraryRepository.removeGameFromLibrary(library.id);
 }
 
+export async function updateEntry(
+  userId: number,
+  gameId: number,
+  body: LibraryUpdate
+) {
+  const library = await validateLibraryEntry(userId, gameId);
+  const updateInput = await validateUpdate(library, body);
+  const newEntry = await libraryRepository.updateLibraryEntry(
+    library.id,
+    updateInput
+  );
+  return newEntry;
+}
+
 const libraryServices = {
   addGameToLibrary,
+  removeFromLibrary,
 };
 
 export default libraryServices;
