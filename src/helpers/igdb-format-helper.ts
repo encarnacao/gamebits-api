@@ -66,7 +66,7 @@ export function formatSingleGame(response: singleGameResponse[]): GameEntity {
       ? platforms.map((platform) => platform.abbreviation).join(", ")
       : "Não informado";
   const releaseDate = first_release_date
-    ? new Date(first_release_date * 1000).toLocaleDateString("pt-BR")
+    ? new Date(first_release_date * 1000)
     : "Não lançado";
   const coverUrl = cover
     ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${cover.image_id}.jpg`
