@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import errors from "@/errors";
 import userRepository from "@/repositories/userRepository";
+import { Session } from "@/protocols";
 
 
 async function validateCredentials(
@@ -24,10 +25,5 @@ async function validateCredentials(
 		throw errors.unauthorizedError();
 	}
 }
-
-type Session = {
-	email: string;
-	iat: number;
-};
 
 export default validateCredentials;

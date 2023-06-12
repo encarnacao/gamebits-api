@@ -1,4 +1,4 @@
-import { gameParams, searchQuery } from "@/schemas/gamesSchemas";
+import { gameParams, searchQuery } from "@/protocols";
 import gamesSerivices from "@/services/gamesServices";
 import { Request, Response, NextFunction } from "express";
 

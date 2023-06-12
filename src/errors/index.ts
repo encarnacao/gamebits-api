@@ -55,13 +55,6 @@ function forbiddenError() {
 	};
 }
 
-export type ErrorType = {
-	status: number;
-	name: string;
-	message: string;
-	email?: string;
-};
-
 export default {
 	unprocessableEntityError,
 	emailConflictError,

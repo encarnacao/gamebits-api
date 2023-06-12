@@ -2,6 +2,7 @@ import { Prisma, type users } from "@prisma/client";
 import bcrypt from "bcrypt";
 import errors from "@/errors";
 import userRepository from "@/repositories/userRepository";
+import { SignInBody } from "@/protocols";
 
 async function createUser(user: Prisma.usersCreateInput) {
 	const hashedPassword = bcrypt.hashSync(user.password, 10);
@@ -24,7 +25,5 @@ async function getUserByEmail(body: SignInBody) {
 	}
 	return user;
 }
-
-export type SignInBody = Pick<users, "email" | "password">;
 
 export default { createUser, getUserByEmail };

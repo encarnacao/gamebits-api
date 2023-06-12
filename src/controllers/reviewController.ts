@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ReviewBody } from "../schemas/reviewSchema.js";
+import { ReviewBody } from "@/protocols";
 
 async function createReview(req: Request, res: Response, next: NextFunction) {
 	const body = req.body as ReviewBody;
