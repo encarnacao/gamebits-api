@@ -21,8 +21,10 @@ async function validateLibraryEntry(userId: number, gameId: number) {
 
 async function validateUpdate(entry: libraries, body: LibraryUpdate) {
   const updateInput: Prisma.librariesUpdateInput = {};
-  if(entry.wishlist){
-    throw errors.badRequestError("You can't update a game that is in your wishlist");
+  if (entry.wishlist) {
+    throw errors.badRequestError(
+      "You can't update a game that is in your wishlist"
+    );
   }
   if (body.status === "platinum" && !entry.finished) {
     throw errors.badRequestError(
@@ -59,6 +61,12 @@ export async function addGameToLibrary(
     gameId,
     isWishlist
   );
+  return library;
+}
+
+export async function searchLibrary(userId: number, isWishlist: boolean) {
+  const library = await libraryRepository.searchLibrary(userId, isWishlist);
+  if (library.length === 0) throw errors.notFoundError();
   return library;
 }
 
