@@ -4,7 +4,7 @@ import { config } from "@/config/igdb-config";
 import axios from "axios";
 import { formatSingleGame } from "@/helpers/igdb-format-helper";
 
-async function getGameById(igdb_id: number) {
+async function getGameByIGDBId(igdb_id: number) {
   let search = await prisma.games.findFirst({
     where: {
       igdb_id: parseInt(igdb_id.toString()),
@@ -15,7 +15,7 @@ async function getGameById(igdb_id: number) {
     if (game.original_realease_date !== "Não lançado") {
       search = await createGameEntry(game);
     } else {
-      return {...game, id: -1};
+      return { ...game, id: -1 };
     }
   }
   return search;
@@ -43,5 +43,5 @@ async function createGameEntry(game: Prisma.gamesCreateInput) {
 }
 
 export default {
-  getGameById,
-}
+  getGameByIGDBId,
+};
