@@ -8,7 +8,7 @@ function addGame(isWishlist: boolean) {
     const { id } = req.params;
     try {
       const entry = await libraryServices.addGameToLibrary(
-        user,
+        user.id,
         Number(id),
         isWishlist
       );
