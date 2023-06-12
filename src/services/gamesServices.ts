@@ -30,9 +30,9 @@ export async function getGameById(igdb_id: number){
   }
 }
 
-const gamesSerivices = {
+const gamesServices = {
   searchGame,
   getGameById
 };
 
-export default gamesSerivices;
+export default gamesServices;

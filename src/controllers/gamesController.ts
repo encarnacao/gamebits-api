@@ -1,11 +1,11 @@
-import { gameParams, searchQuery } from "@/protocols";
-import gamesSerivices from "@/services/gamesServices";
+import { idParams, searchQuery } from "@/protocols";
+import gamesServices from "@/services/gamesServices";
 import { Request, Response, NextFunction } from "express";
 
 async function searchGame(req: Request, res: Response, next: NextFunction) {
   const query = req.query as unknown as searchQuery;
   try {
-    const games = await gamesSerivices.searchGame(query.name);
+    const games = await gamesServices.searchGame(query.name);
     res.status(200).json(games);
   } catch (err) {
     next(err);
@@ -13,9 +13,9 @@ async function searchGame(req: Request, res: Response, next: NextFunction) {
 }
 
 async function getGameById(req: Request, res: Response, next: NextFunction) {
-  const params = req.params as unknown as gameParams;
+  const params = req.params as unknown as idParams;
   try {
-    const game = await gamesSerivices.getGameById(params.id);
+    const game = await gamesServices.getGameById(params.id);
     res.status(200).json(game);
   } catch (err) {
     next(err);
