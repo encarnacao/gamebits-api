@@ -5,9 +5,9 @@ import axios from "axios";
 import { formatSingleGame } from "@/helpers/igdb-format-helper";
 
 async function getGameById(igdb_id: number) {
-  let search = await prisma.games.findUnique({
+  let search = await prisma.games.findFirst({
     where: {
-      igdb_id,
+      igdb_id: parseInt(igdb_id.toString()),
     },
   });
   if (!search) {
