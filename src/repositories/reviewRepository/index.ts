@@ -1,99 +1,41 @@
 import { prisma } from "@/config";
 
-async function createReview(
-	gameId: number,
-	userId: number,
-	rating: number,
-	reviewText: string
-) {
-	return await prisma.reviews.create({
-		data: {
-			rating,
-			review: reviewText,
-			games: {
-				connect: { id: gameId },
-			},
-			users: {
-				connect: { id: userId },
-			},
-		},
-	});
+async function createReview(user_id: number, game_id: number, text: string, rating: number){
+  return await prisma.reviews.create({
+    data: { user_id, game_id, text, rating },
+  });
 }
 
-async function getReviewById(id: number) {
-	return await prisma.reviews.findUnique({
-		where: { id },
-		select: {
-			id: true,
-			rating: true,
-			review: true,
-			users: {
-				select: {
-					id: true,
-					name: true,
-					picture_url: true,
-				},
-			},
-			games: {
-				select: {
-					id: true,
-					name: true,
-				},
-			},
-		},
-	});
+async function deleteReview(id: number){
+  return await prisma.reviews.delete({
+    where: { id },
+  });
 }
 
-async function getReviews(queryParams: { game?: string; user?: string }) {
-	const { game, user } = queryParams;
-	let where: whereParams = {};
-	if (game) {
-		where = { ...where, games: { name: game } };
-	}
-	if (user) {
-		where = { ...where, users: { name: user } };
-	}
-	return await prisma.reviews.findMany({
-		select: {
-			id: true,
-			rating: true,
-			review: true,
-			users: {
-				select: {
-					id: true,
-					name: true,
-					picture_url: true,
-				},
-			},
-			games: {
-				select: {
-					id: true,
-					name: true,
-				},
-			},
-			comments: {
-				select: {
-					id: true,
-					text: true,
-					users: {
-						select: {
-							id: true,
-							name: true,
-							picture_url: true,
-						},
-					},
-				},
-				orderBy: { created_at: "desc" },
-			},
-		},
-		orderBy: { created_at: "desc" },
-		where: where,
-	});
+async function searchReview(id: number){
+  return await prisma.reviews.findFirst({
+    where: { id },
+  });
 }
 
-type whereParams = {
-	games?: { name: string };
-	users?: { name: string };
-};
+async function searchReviews(game_id: number){
+  return await prisma.reviews.findMany({
+    where: { game_id },
+    include: { users: true, votes: true },
+  });
+}
 
-export default { createReview, getReviews, getReviewById };
+async function searchUserReviews(user_id: number){
+  return await prisma.reviews.findMany({
+    where: { user_id },
+    include: { games: true, votes: true },
+  });
+}
+
+export default {
+  createReview,
+  deleteReview,
+  searchReview,
+  searchReviews,
+  searchUserReviews,
+}
