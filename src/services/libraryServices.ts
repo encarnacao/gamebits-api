@@ -21,6 +21,9 @@ async function validateLibraryEntry(userId: number, gameId: number) {
 
 async function validateUpdate(entry: libraries, body: LibraryUpdate) {
   const updateInput: Prisma.librariesUpdateInput = {};
+  if(entry.wishlist){
+    throw errors.badRequestError("You can't update a game that is in your wishlist");
+  }
   if (body.status === "platinum" && !entry.finished) {
     throw errors.badRequestError(
       "You can't have platinum trophy of a game you haven't finished"
