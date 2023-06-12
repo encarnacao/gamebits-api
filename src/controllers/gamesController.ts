@@ -1,4 +1,4 @@
-import { searchQuery } from "@/schemas/gamesSchemas";
+import { gameParams, searchQuery } from "@/schemas/gamesSchemas";
 import gamesSerivices from "@/services/gamesServices";
 import { Request, Response, NextFunction } from "express";
 
@@ -12,8 +12,19 @@ async function searchGame(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function getGameById(req: Request, res: Response, next: NextFunction) {
+  const params = req.params as unknown as gameParams;
+  try {
+    const game = await gamesSerivices.getGameById(params.id);
+    res.status(200).json(game);
+  } catch (err) {
+    next(err);
+  }
+}
+
 const gamesController = {
   searchGame,
+  getGameById,
 };
 
 export default gamesController;

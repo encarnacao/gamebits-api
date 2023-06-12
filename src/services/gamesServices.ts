@@ -1,13 +1,11 @@
 import axios from "axios";
-import { headers } from "@/config/igdb-config";
+import { config } from "@/config/igdb-config";
 import { formatResponse } from "@/helpers/igdb-format-helper";
+import gamesRepository from "@/repositories/gameRepository";
 import errors from "@/errors";
 
 export async function searchGame(gameName: string) {
-  const config = {
-    headers,
-  };
-  const body = `fields name, cover.image_id, first_release_date, platforms.abbreviation, summary; search "${gameName}";`;
+  const body = `fields name, cover.image_id, first_release_date, platforms.abbreviation, summary, involved_companies; search "${gameName}";`;
   try {
     const response = await axios.post(
       "https://api.igdb.com/v4/games",
@@ -22,8 +20,19 @@ export async function searchGame(gameName: string) {
   }
 }
 
+export async function getGameById(igdb_id: number){
+  try{
+    const game = await gamesRepository.getGameById(igdb_id);
+    return game;
+  } catch(err){
+    console.log(err);
+    throw errors.notFoundError();
+  }
+}
+
 const gamesSerivices = {
   searchGame,
+  getGameById
 };
 
 export default gamesSerivices;
