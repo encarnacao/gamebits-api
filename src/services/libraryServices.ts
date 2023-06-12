@@ -9,6 +9,14 @@ async function validateGame(gameId: number) {
   }
 }
 
+async function validateLibrary(userId: number, gameId: number) {
+  const library = await libraryRepository.searchLibraryEntry(userId, gameId);
+  if (!library) {
+    throw errors.notFoundError();
+  }
+  return library;
+}
+
 export async function addGameToLibrary(
   userId: number,
   gameId: number,
@@ -21,6 +29,11 @@ export async function addGameToLibrary(
     isWishlist
   );
   return library;
+}
+
+export async function removeFromLibrary(userId: number, libraryId: number) {
+  const library = await validateLibrary(userId, libraryId);
+  await libraryRepository.removeGameFromLibrary(library.id);
 }
 
 const libraryServices = {
