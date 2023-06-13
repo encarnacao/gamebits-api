@@ -15,14 +15,18 @@ async function createVote(reviewId: number, userId: number, upVote: boolean) {
   return vote;
 }
 
-async function updateVote(id: number, user_id: number, upVote: boolean) {
-  const voteCheck = await checkForVote
-  const vote = await voteRepository.updateVote(id, upVote);
-  return vote;
+async function updateVote(reviewId: number, user_id: number) {
+  const vote = await checkForVote(reviewId, user_id);
+  if (!vote) {
+    throw errors.notFoundError();
+  }
+  const newVote = await voteRepository.updateVote(vote.id, !vote.up_vote);
+  return newVote;
 }
 
 const voteServices = {
   createVote,
+  updateVote,
 };
 
 export default voteServices;
