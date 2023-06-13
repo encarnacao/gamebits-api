@@ -6,12 +6,6 @@ async function searchUserVote(review_id: number, user_id: number) {
   });
 }
 
-async function searchById(id: number) {
-  return await prisma.votes.findFirst({
-    where: { id },
-  });
-}
-
 async function createVote(
   user_id: number,
   review_id: number,
@@ -40,5 +34,4 @@ export default {
   createVote,
   updateVote,
   deleteVote,
-  searchById,
 };
