@@ -1,4 +1,5 @@
 import errors from "@/errors";
+import { formatReviews, formatUserReviews } from "@/helpers/review-format-helper";
 import { ReviewBody } from "@/protocols";
 import reviewRepository from "@/repositories/reviewRepository";
 
@@ -38,9 +39,28 @@ async function deleteReview(reviewId: number, userId: number) {
   return { message: "Review deleted successfully" };
 }
 
+async function getReviews(gameId: number) {
+  const search = await reviewRepository.searchReviews(gameId);
+  if (search.length === 0) {
+    throw errors.notFoundError();
+  }
+  const reviews = formatReviews(search);
+  return reviews;
+}
+
+async function getUserReviews(userId: number) {
+  const search = await reviewRepository.searchUserReviews(userId);
+  if (search.length === 0) {
+    throw errors.notFoundError();
+  }
+  const reviews = formatUserReviews(search);
+  return reviews;
+}
+
 const reviewServices = {
   createReview,
   deleteReview,
+  getReviews,
 };
 
 export default reviewServices;
