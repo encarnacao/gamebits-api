@@ -15,6 +15,12 @@ async function createVote(reviewId: number, userId: number, upVote: boolean) {
   return vote;
 }
 
+async function updateVote(id: number, user_id: number, upVote: boolean) {
+  const voteCheck = await checkForVote
+  const vote = await voteRepository.updateVote(id, upVote);
+  return vote;
+}
+
 const voteServices = {
   createVote,
 };
