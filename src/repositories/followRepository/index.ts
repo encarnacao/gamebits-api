@@ -21,12 +21,22 @@ async function searchFollow(user_id: number, followed_id: number) {
 async function getFollowers(user_id: number) {
   return await prisma.follows.findMany({
     where: { followed: user_id },
+    include: {
+      users_follows_followingTousers: {
+        select: { id: true, username: true, image_url: true },
+      },
+    },
   });
 }
 
 async function getFollowings(user_id: number) {
   return await prisma.follows.findMany({
     where: { following: user_id },
+    include: {
+      users_follows_followedTousers: {
+        select: { id: true, username: true, image_url: true },
+      },
+    },
   });
 }
 
