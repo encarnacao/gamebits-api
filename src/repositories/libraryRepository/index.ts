@@ -17,10 +17,13 @@ async function removeGameFromLibrary(id: number) {
   });
 }
 
-async function updateLibraryEntry(id: number, props: Prisma.librariesUpdateInput) {
+async function updateLibraryEntry(
+  id: number,
+  props: Prisma.librariesUpdateInput
+) {
   return await prisma.libraries.update({
     where: { id },
-    data: props,
+    data: { ...props, updated_at: new Date() },
   });
 }
 
@@ -35,7 +38,6 @@ async function searchLibrary(user_id: number, wishlist: boolean) {
     where: { user_id, wishlist },
   });
 }
-
 
 export default {
   addGameToLibrary,

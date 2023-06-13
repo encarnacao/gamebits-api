@@ -25,7 +25,7 @@ async function createVote(
 async function updateVote(id: number, up_vote: boolean) {
   return await prisma.votes.update({
     where: { id },
-    data: { up_vote },
+    data: { up_vote, updated_at: new Date() },
   });
 }
 
