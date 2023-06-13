@@ -26,6 +26,22 @@ async function unfollowUser(user_id: number, followed_id: number) {
   return { message: "Unfollowed successfully" };
 }
 
-const followService = { followUser, unfollowUser };
+async function getFollowers(user_id: number) {
+  const followers = await followRepository.getFollowers(user_id);
+  if (followers.length === 0) {
+    throw errors.notFoundError();
+  }
+  return followers;
+}
+
+async function getFollowings(user_id: number) {
+  const followings = await followRepository.getFollowings(user_id);
+  if (followings.length === 0) {
+    throw errors.notFoundError();
+  }
+  return followings;
+}
+
+const followService = { followUser, unfollowUser, getFollowers, getFollowings };
 
 export default followService;
