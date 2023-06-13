@@ -1,7 +1,7 @@
 import { prisma } from "@/config";
 
 async function searchUserVote(review_id: number, user_id: number) {
-  return await prisma.votes.findMany({
+  return await prisma.votes.findFirst({
     where: { review_id, user_id },
   });
 }
