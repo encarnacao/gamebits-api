@@ -24,9 +24,19 @@ async function updateVote(reviewId: number, user_id: number) {
   return newVote;
 }
 
+async function deleteVote(reviewId: number, user_id: number) {
+  const vote = await checkForVote(reviewId, user_id);
+  if (!vote) {
+    throw errors.notFoundError();
+  }
+  await voteRepository.deleteVote(vote.id);
+  return { message: "Vote deleted successfully" };
+}
+
 const voteServices = {
   createVote,
   updateVote,
+  deleteVote,
 };
 
 export default voteServices;
