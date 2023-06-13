@@ -27,19 +27,29 @@ async function unfollowUser(user_id: number, followed_id: number) {
 }
 
 async function getFollowers(user_id: number) {
-  const followers = await followRepository.getFollowers(user_id);
-  if (followers.length === 0) {
+  const search = await followRepository.getFollowers(user_id);
+  if (search.length === 0) {
     throw errors.notFoundError();
   }
+  const followers = search.map((follow) => ({
+    id: follow.users_follows_followingTousers.id,
+    username: follow.users_follows_followingTousers.username,
+    image_url: follow.users_follows_followingTousers.image_url,
+  }));
   return followers;
 }
 
 async function getFollowings(user_id: number) {
-  const followings = await followRepository.getFollowings(user_id);
-  if (followings.length === 0) {
+  const search = await followRepository.getFollowings(user_id);
+  if (search.length === 0) {
     throw errors.notFoundError();
   }
-  return followings;
+  const following = search.map((follow) => ({
+    id: follow.users_follows_followedTousers.id,
+    username: follow.users_follows_followedTousers.username,
+    image_url: follow.users_follows_followedTousers.image_url,
+  }));
+  return following;
 }
 
 const followService = { followUser, unfollowUser, getFollowers, getFollowings };
