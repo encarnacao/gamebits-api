@@ -32,6 +32,15 @@ async function createReview(userId: number, body: ReviewBody) {
   return review;
 }
 
+async function deleteReview(reviewId: number, userId: number) {
+  await validateUserReview(reviewId, userId);
+  await reviewRepository.deleteReview(reviewId);
+  return { message: "Review deleted successfully" };
+}
+
 const reviewServices = {
   createReview,
+  deleteReview,
 };
+
+export default reviewServices;
