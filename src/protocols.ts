@@ -59,6 +59,12 @@ export interface LibraryUpdate {
   completion_time?: number;
 }
 
+export interface ReviewBody {
+  game_id: number;
+  text: string;
+  rating: number;
+}
+
 export type GameEntity = Pick<
   Prisma.gamesCreateInput,
   | "igdb_id"
@@ -68,8 +74,6 @@ export type GameEntity = Pick<
   | "genres"
   | "platforms"
 >;
-
-export type ReviewBody = Pick<reviews, "rating" | "text" | "game_id">;
 
 export type UserParams = Pick<users, "username" | "email" | "password">;
 
