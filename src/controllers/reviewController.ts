@@ -24,6 +24,16 @@ async function getGameReview(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function gerUserReviews(req: Request, res: Response, next: NextFunction) {
+  const user: users = res.locals.user;
+  try {
+    const reviews = await reviewServices.getUserReviews(user.id);
+    res.send(reviews);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function deleteReview(req: Request, res: Response, next: NextFunction) {
   const { id } = req.params as unknown as idParams;
   const user: users = res.locals.user;
@@ -35,5 +45,4 @@ async function deleteReview(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-
-export default { createReview, getGameReview, deleteReview };
+export default { createReview, getGameReview, gerUserReviews, deleteReview };
