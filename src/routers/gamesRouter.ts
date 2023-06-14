@@ -7,7 +7,8 @@ import { Router } from "express";
 
 const gamesRouter = Router();
 
-gamesRouter.post("/", validateQuery(searchSchema), searchGame);
-gamesRouter.get("/:id", validateParams(paramsSchema), getGameById);
+gamesRouter
+  .post("/", validateQuery(searchSchema), searchGame)
+  .get("/:id", validateParams(paramsSchema), getGameById);
 
 export default gamesRouter;
