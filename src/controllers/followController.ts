@@ -13,4 +13,15 @@ async function followUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { followUser };
+async function unfollowUser(req: Request, res: Response, next: NextFunction) {
+  const { id } = req.params as unknown as idParams;
+  const user = res.locals.user;
+  try {
+    await followServices.unfollowUser(user.id, Number(id));
+    res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export { followUser, unfollowUser };
