@@ -1,5 +1,8 @@
 import errors from "@/errors";
-import { formatReviews, formatUserReviews } from "@/helpers/review-format-helper";
+import {
+  formatReviews,
+  formatUserReviews,
+} from "@/helpers/review-format-helper";
 import { ReviewBody } from "@/protocols";
 import reviewRepository from "@/repositories/reviewRepository";
 
@@ -61,6 +64,7 @@ const reviewServices = {
   createReview,
   deleteReview,
   getReviews,
+  getUserReviews,
 };
 
 export default reviewServices;
