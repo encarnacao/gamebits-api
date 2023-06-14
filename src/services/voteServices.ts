@@ -15,8 +15,8 @@ async function createVote(reviewId: number, userId: number, upVote: boolean) {
   return vote;
 }
 
-async function updateVote(reviewId: number, user_id: number) {
-  const vote = await checkForVote(reviewId, user_id);
+async function updateVote(reviewId: number, userId: number) {
+  const vote = await checkForVote(reviewId, userId);
   if (!vote) {
     throw errors.notFoundError();
   }
@@ -24,8 +24,8 @@ async function updateVote(reviewId: number, user_id: number) {
   return newVote;
 }
 
-async function deleteVote(reviewId: number, user_id: number) {
-  const vote = await checkForVote(reviewId, user_id);
+async function deleteVote(reviewId: number, userId: number) {
+  const vote = await checkForVote(reviewId, userId);
   if (!vote) {
     throw errors.notFoundError();
   }

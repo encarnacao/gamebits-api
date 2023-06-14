@@ -20,6 +20,10 @@ async function findUserById(id: number) {
     where: {
       id,
     },
+    include: {
+      follows_follows_followedTousers: true,
+      follows_follows_followingTousers: true,
+    }
   });
 }
 

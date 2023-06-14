@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import errors from "@/errors";
 import userRepository from "@/repositories/userRepository";
 import { SignInBody } from "@/protocols";
+import { formatUser } from "@/helpers/user-format-helper";
 
 async function createUser(user: Prisma.usersCreateInput) {
   const hashedPassword = bcrypt.hashSync(user.password, 10);
@@ -27,10 +28,11 @@ async function getUserByEmail(body: SignInBody) {
 }
 
 async function getUserById(id: number) {
-  const user = await userRepository.findUserById(id);
-  if (!user) {
+  const search = await userRepository.findUserById(id);
+  if (!search) {
     throw errors.notFoundError();
   }
+  const user = formatUser(search);
   return user;
 }
 

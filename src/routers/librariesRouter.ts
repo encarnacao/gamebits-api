@@ -2,15 +2,15 @@ import { Router } from "express";
 import { validateParams } from "../middlewares/validateSchema.js";
 import validateCredentials from "@/middlewares/authMiddleware.js";
 import { librarySchema } from "@/schemas/librarySchemas.js";
-import libraryController from "@/controllers/libraryController.js";
+import { addGame } from "@/controllers/libraryController.js";
 
-const libraryRouter = Router();
+const librariesRouter = Router();
 
-libraryRouter.post(
+librariesRouter.post(
   "/add/:id",
   validateCredentials,
   validateParams(librarySchema),
-  libraryController.addGame
+  addGame
 );
 
-export default libraryRouter;
+export default librariesRouter;

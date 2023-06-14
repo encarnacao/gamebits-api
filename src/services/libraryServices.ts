@@ -92,6 +92,7 @@ export async function updateEntry(
 const libraryServices = {
   addGameToLibrary,
   removeFromLibrary,
+  updateEntry,
 };
 
 export default libraryServices;
