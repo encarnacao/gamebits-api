@@ -1,24 +1,24 @@
 import errors from "@/errors";
 import followRepository from "@/repositories/followRepository";
 
-async function checkFollow(user_id: number, followed_id: number) {
-  if (user_id === followed_id) {
+async function checkFollow(userId: number, followedId: number) {
+  if (userId === followedId) {
     throw errors.badRequestError("You can't follow yourself");
   }
-  const follow = await followRepository.searchFollow(user_id, followed_id);
+  const follow = await followRepository.searchFollow(userId, followedId);
   return follow;
 }
 
-async function followUser(user_id: number, followed_id: number) {
-  const follow = await checkFollow(user_id, followed_id);
+async function followUser(userId: number, followedId: number) {
+  const follow = await checkFollow(userId, followedId);
   if (follow) {
     throw errors.conflictError();
   }
-  return await followRepository.followUser(user_id, followed_id);
+  return await followRepository.followUser(userId, followedId);
 }
 
-async function unfollowUser(user_id: number, followed_id: number) {
-  const follow = await checkFollow(user_id, followed_id);
+async function unfollowUser(userId: number, followedId: number) {
+  const follow = await checkFollow(userId, followedId);
   if (!follow) {
     throw errors.notFoundError();
   }
@@ -26,8 +26,8 @@ async function unfollowUser(user_id: number, followed_id: number) {
   return { message: "Unfollowed successfully" };
 }
 
-async function getFollowers(user_id: number) {
-  const search = await followRepository.getFollowers(user_id);
+async function getFollowers(userId: number) {
+  const search = await followRepository.getFollowers(userId);
   if (search.length === 0) {
     throw errors.notFoundError();
   }
@@ -39,8 +39,8 @@ async function getFollowers(user_id: number) {
   return followers;
 }
 
-async function getFollowings(user_id: number) {
-  const search = await followRepository.getFollowings(user_id);
+async function getFollowings(userId: number) {
+  const search = await followRepository.getFollowings(userId);
   if (search.length === 0) {
     throw errors.notFoundError();
   }
