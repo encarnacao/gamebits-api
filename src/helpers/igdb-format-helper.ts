@@ -1,38 +1,4 @@
-import { Prisma } from "@prisma/client";
-
-interface igdbResponse {
-  id: number;
-  cover: {
-    image_id: string;
-    id: number;
-  };
-  name: string;
-  first_release_date: number;
-  platforms: platform[];
-  summary: string;
-}
-
-interface singleGameResponse {
-  id: number;
-  cover: {
-    image_id: string;
-    id: number;
-  };
-  name: string;
-  first_release_date: number;
-  platforms: platform[];
-  genres: genre[];
-}
-
-interface genre {
-  name: string;
-  id: number;
-}
-
-interface platform {
-  abbreviation: string;
-  id: number;
-}
+import { GameEntity, igdbResponse, singleGameResponse } from "@/protocols";
 
 export function formatResponse(response: igdbResponse[]) {
   return response.map((game) => {
@@ -83,13 +49,3 @@ export function formatSingleGame(response: singleGameResponse[]): GameEntity {
     genres: genreNames,
   };
 }
-
-export type GameEntity = Pick<
-  Prisma.gamesCreateInput,
-  | "igdb_id"
-  | "name"
-  | "cover_url"
-  | "original_realease_date"
-  | "genres"
-  | "platforms"
->;

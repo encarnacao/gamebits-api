@@ -2,29 +2,36 @@ import { Prisma, type users } from "@prisma/client";
 import bcrypt from "bcrypt";
 import errors from "@/errors";
 import userRepository from "@/repositories/userRepository";
+import { SignInBody } from "@/protocols";
 
 async function createUser(user: Prisma.usersCreateInput) {
-	const hashedPassword = bcrypt.hashSync(user.password, 10);
-	user.password = hashedPassword;
-	const createdUser = await userRepository.createUser(user);
-	if (createdUser) {
-		return createdUser;
-	}
-	return null;
+  const hashedPassword = bcrypt.hashSync(user.password, 10);
+  user.password = hashedPassword;
+  const createdUser = await userRepository.createUser(user);
+  if (createdUser) {
+    return createdUser;
+  }
+  return null;
 }
 
 async function getUserByEmail(body: SignInBody) {
-	const user = await userRepository.findUserByEmail(body.email);
-	if (!user) {
-		throw errors.invalidCredentialsError();
-	}
-	const confirmPassword = await bcrypt.compare(body.password, user.password);
-	if (!confirmPassword) {
-		throw errors.invalidCredentialsError();
-	}
-	return user;
+  const user = await userRepository.findUserByEmail(body.email);
+  if (!user) {
+    throw errors.invalidCredentialsError();
+  }
+  const confirmPassword = await bcrypt.compare(body.password, user.password);
+  if (!confirmPassword) {
+    throw errors.invalidCredentialsError();
+  }
+  return user;
 }
 
-export type SignInBody = Pick<users, "email" | "password">;
+async function getUserById(id: number) {
+  const user = await userRepository.findUserById(id);
+  if (!user) {
+    throw errors.notFoundError();
+  }
+  return user;
+}
 
-export default { createUser, getUserByEmail };
+export default { createUser, getUserByEmail, getUserById };

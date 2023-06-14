@@ -20,9 +20,9 @@ export async function searchGame(gameName: string) {
   }
 }
 
-export async function getGameById(igdb_id: number){
+export async function getGameByIGDBId(igdb_id: number){
   try{
-    const game = await gamesRepository.getGameById(igdb_id);
+    const game = await gamesRepository.getGameByIGDBId(igdb_id);
     return game;
   } catch(err){
     console.log(err);
@@ -30,9 +30,9 @@ export async function getGameById(igdb_id: number){
   }
 }
 
-const gamesSerivices = {
+const gamesServices = {
   searchGame,
-  getGameById
+  getGameByIGDBId
 };
 
-export default gamesSerivices;
+export default gamesServices;

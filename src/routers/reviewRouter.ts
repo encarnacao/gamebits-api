@@ -1,7 +1,7 @@
 import { Router } from "express";
 import reviewController from "../controllers/reviewController.js";
 import validateCredentials from "../middlewares/authMiddleware.js";
-import { validateSchema } from "../middlewares/validateSchema.js";
+import { validateBody } from "../middlewares/validateSchema.js";
 import { reviewSchema } from "../schemas/reviewSchema.js";
 
 const reviewRouter = Router();
@@ -9,7 +9,7 @@ const reviewRouter = Router();
 reviewRouter.post(
 	"/",
 	validateCredentials,
-	validateSchema(reviewSchema),
+	validateBody(reviewSchema),
 	reviewController.createReview
 );
 

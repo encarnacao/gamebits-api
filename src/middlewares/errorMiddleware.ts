@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ErrorType } from "@/errors";
+import { ErrorType } from "@/protocols";
 
 export function handleApplicationErrors(
 	err: ErrorType,

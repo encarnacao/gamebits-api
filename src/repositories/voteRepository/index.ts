@@ -1,7 +1,7 @@
 import { prisma } from "@/config";
 
 async function searchUserVote(review_id: number, user_id: number) {
-  return await prisma.votes.findMany({
+  return await prisma.votes.findFirst({
     where: { review_id, user_id },
   });
 }
@@ -19,7 +19,7 @@ async function createVote(
 async function updateVote(id: number, up_vote: boolean) {
   return await prisma.votes.update({
     where: { id },
-    data: { up_vote },
+    data: { up_vote, updated_at: new Date() },
   });
 }
 
