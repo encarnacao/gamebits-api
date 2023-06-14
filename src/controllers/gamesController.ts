@@ -22,9 +22,4 @@ async function getGameById(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-const gamesController = {
-  searchGame,
-  getGameById,
-};
-
-export default gamesController;
+export { searchGame, getGameById };

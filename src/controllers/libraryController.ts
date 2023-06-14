@@ -43,10 +43,4 @@ async function updateEntry(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-const libraryController = {
-  addGame,
-  removeGame,
-  updateEntry,
-};
-
-export default libraryController;
+export { addGame, removeGame, updateEntry };

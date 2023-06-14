@@ -45,4 +45,4 @@ async function deleteReview(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export default { createReview, getGameReview, gerUserReviews, deleteReview };
+export { createReview, getGameReview, gerUserReviews, deleteReview };
