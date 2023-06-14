@@ -39,7 +39,6 @@ async function createReview(userId: number, body: ReviewBody) {
 async function deleteReview(reviewId: number, userId: number) {
   await validateUserReview(reviewId, userId);
   await reviewRepository.deleteReview(reviewId);
-  return { message: "Review deleted successfully" };
 }
 
 async function getReviews(gameId: number) {
