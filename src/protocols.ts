@@ -65,6 +65,11 @@ export interface ReviewBody {
   rating: number;
 }
 
+export interface VotingBody {
+  reviewId: number;
+  upVote: boolean;
+}
+
 export type GameEntity = Pick<
   Prisma.gamesCreateInput,
   | "igdb_id"
@@ -98,7 +103,7 @@ export type UnformattedUserReviews = reviews & {
 export type UnformattedUser = users & {
   follows_follows_followedTousers: follows[];
   follows_follows_followingTousers: follows[];
-}
+};
 
 export type UserParams = Pick<users, "username" | "email" | "password">;
 
