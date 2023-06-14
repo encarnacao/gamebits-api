@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ReviewBody, idParams } from "@/protocols";
+import { ReviewBody } from "@/protocols";
 import reviewServices from "@/services/reviewServices";
 import { users } from "@prisma/client";
 
@@ -15,7 +15,7 @@ async function createReview(req: Request, res: Response, next: NextFunction) {
 }
 
 async function getGameReview(req: Request, res: Response, next: NextFunction) {
-  const { id } = req.params as unknown as idParams;
+  const { id } = req.params;
   try {
     const reviews = await reviewServices.getReviews(Number(id));
     res.send(reviews);
@@ -35,7 +35,7 @@ async function gerUserReviews(req: Request, res: Response, next: NextFunction) {
 }
 
 async function deleteReview(req: Request, res: Response, next: NextFunction) {
-  const { id } = req.params as unknown as idParams;
+  const { id } = req.params;
   const user: users = res.locals.user;
   try {
     await reviewServices.deleteReview(Number(id), user.id);

@@ -7,7 +7,7 @@ import { formatSingleGame } from "@/helpers/igdb-format-helper";
 async function getGameByIGDBId(igdb_id: number) {
   let search = await prisma.games.findFirst({
     where: {
-      igdb_id: parseInt(igdb_id.toString()),
+      igdb_id,
     },
   });
   if (!search) {
@@ -51,5 +51,5 @@ async function createGameEntry(game: Prisma.gamesCreateInput) {
 
 export default {
   getGameByIGDBId,
-  searchById
+  searchById,
 };
