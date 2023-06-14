@@ -1,5 +1,5 @@
 import { Router } from "express";
 
-const followRouter = Router();
+const followsRouter = Router();
 
-export default followRouter;
+export default followsRouter;

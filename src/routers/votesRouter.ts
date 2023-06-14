@@ -1,5 +1,5 @@
 import { Router } from "express";
 
-const voteRouter = Router();
+const votesRouter = Router();
 
-export default voteRouter;
+export default votesRouter;
