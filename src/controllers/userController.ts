@@ -28,9 +28,9 @@ async function signIn(req: Request, res: Response, next: NextFunction) {
 }
 
 async function findUser(req: Request, res: Response, next: NextFunction) {
-	const params = req.params as unknown as idParams;
+	const { id } = req.params;
 	try {
-		const user = await userServices.getUserById(Number(params.id));
+		const user = await userServices.getUserById(Number(id));
 		res.send(user);
 	} catch (err) {
 		next(err);

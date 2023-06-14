@@ -14,7 +14,7 @@ async function createReview(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function getGameReview(req: Request, res: Response, next: NextFunction) {
+async function getGameReviews(req: Request, res: Response, next: NextFunction) {
   const { id } = req.params;
   try {
     const reviews = await reviewServices.getReviews(Number(id));
@@ -24,7 +24,7 @@ async function getGameReview(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function gerUserReviews(req: Request, res: Response, next: NextFunction) {
+async function getUserReviews(req: Request, res: Response, next: NextFunction) {
   const user: users = res.locals.user;
   try {
     const reviews = await reviewServices.getUserReviews(user.id);
@@ -45,4 +45,4 @@ async function deleteReview(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { createReview, getGameReview, gerUserReviews, deleteReview };
+export { createReview, getGameReviews, getUserReviews, deleteReview };
