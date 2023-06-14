@@ -24,4 +24,24 @@ async function unfollowUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { followUser, unfollowUser };
+async function getFollowers(req: Request, res: Response, next: NextFunction) {
+  const { id } = req.params as unknown as idParams;
+  try {
+    const followers = await followServices.getFollowers(Number(id));
+    res.status(200).send(followers);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getFollowing(req: Request, res: Response, next: NextFunction) {
+  const { id } = req.params as unknown as idParams;
+  try {
+    const following = await followServices.getFollowings(Number(id));
+    res.status(200).send(following);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export { followUser, unfollowUser, getFollowers, getFollowing };
