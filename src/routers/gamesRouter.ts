@@ -1,11 +1,13 @@
-import gamesController from "@/controllers/gamesController";
+import { getGameById } from "@/controllers/gamesController";
 import { validateParams, validateQuery } from "@/middlewares/validateSchema";
-import { gameParamsSchema, searchSchema } from "@/schemas/gamesSchemas";
+import { searchSchema } from "@/schemas/gamesSchemas";
+import { paramsSchema } from "@/schemas/genericSchemas";
+import { searchGame } from "@/services/gamesServices";
 import { Router } from "express";
 
 const gamesRouter = Router();
 
-gamesRouter.post("/", validateQuery(searchSchema), gamesController.searchGame);
-gamesRouter.get("/:id", validateParams(gameParamsSchema), gamesController.getGameById);
+gamesRouter.post("/", validateQuery(searchSchema), searchGame);
+gamesRouter.get("/:id", validateParams(paramsSchema), getGameById);
 
 export default gamesRouter;
