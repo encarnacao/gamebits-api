@@ -37,4 +37,4 @@ async function findUser(req: Request, res: Response, next: NextFunction) {
 	}
 }
 
-export default { createUser, signIn };
+export default { createUser, signIn, findUser };
