@@ -19,6 +19,17 @@ function addGame(isWishlist: boolean) {
   };
 }
 
+async function removeGame(req: Request, res: Response, next: NextFunction) {
+  const user: users = res.locals.user;
+  const { id } = req.params;
+  try {
+    await libraryServices.removeFromLibrary(user.id, Number(id));
+    res.sendStatus(201);
+  } catch (err) {
+    next(err);
+  }
+}
+
 const libraryController = {
   addGame,
 };
