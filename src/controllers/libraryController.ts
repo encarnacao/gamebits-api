@@ -1,3 +1,4 @@
+import { LibraryUpdate } from "@/protocols";
 import libraryServices from "@/services/libraryServices";
 import { users } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
@@ -30,8 +31,22 @@ async function removeGame(req: Request, res: Response, next: NextFunction) {
   }
 }
 
+async function updateEntry(req: Request, res: Response, next: NextFunction) {
+  const user: users = res.locals.user;
+  const { id } = req.params;
+  const body = req.body as LibraryUpdate;
+  try {
+    const update = await libraryServices.updateEntry(user.id, Number(id), body);
+    res.status(200).send(update);
+  } catch (err) {
+    next(err);
+  }
+}
+
 const libraryController = {
   addGame,
+  removeGame,
+  updateEntry,
 };
 
 export default libraryController;
