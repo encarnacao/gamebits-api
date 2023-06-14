@@ -1,4 +1,4 @@
-import { Prisma, games, reviews, users, votes } from "@prisma/client";
+import { Prisma, follows, games, reviews, users, votes } from "@prisma/client";
 
 export interface igdbResponse {
   id: number;
@@ -94,6 +94,11 @@ export type UnformattedUserReviews = reviews & {
     up_vote: boolean;
   }[];
 };
+
+export type UnformattedUser = users & {
+  follows_follows_followedTousers: follows[];
+  follows_follows_followingTousers: follows[];
+}
 
 export type UserParams = Pick<users, "username" | "email" | "password">;
 
