@@ -13,9 +13,9 @@ async function searchGame(req: Request, res: Response, next: NextFunction) {
 }
 
 async function getGameById(req: Request, res: Response, next: NextFunction) {
-  const params = req.params as unknown as idParams;
+  const { id } = req.params;
   try {
-    const game = await gamesServices.getGameByIGDBId(params.id);
+    const game = await gamesServices.getGameByIGDBId(Number(id));
     res.status(200).json(game);
   } catch (err) {
     next(err);
