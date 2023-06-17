@@ -38,7 +38,7 @@ async function searchIGDB(igdb_id: number) {
     const game = formatSingleGame(responseBody);
     return game;
   } catch {
-    console.log("error");
+    throw errors.notFoundError();
   }
 }
 
