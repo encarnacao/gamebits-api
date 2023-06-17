@@ -18,7 +18,6 @@ export async function searchGame(gameName: string) {
     const json = formatResponse(await response.json());
     return json;
   } catch (err) {
-    console.log(err);
     throw errors.notFoundError();
   }
 }
@@ -28,7 +27,6 @@ export async function getGameByIGDBId(igdb_id: number) {
     const game = await gamesRepository.getGameByIGDBId(igdb_id);
     return game;
   } catch (err) {
-    console.log(err);
     throw errors.notFoundError();
   }
 }
