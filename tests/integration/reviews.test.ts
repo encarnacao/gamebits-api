@@ -157,3 +157,37 @@ describe("GET /reviews/:id", () => {
     ]);
   });
 });
+
+describe("GET /reviews/user/:id", () => {
+  it("should return status 422 if params is invalid", async () => {
+    const response = await server.get(`/reviews/user/${faker.lorem.word()}`);
+    expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+  });
+  it("should return status 404 if there are no reviews for user id", async () => {
+    const response = await server.get("/reviews/user/1");
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return status 200 if there are reviews for user id", async () => {
+    const { game, user, review } = await createValidReview();
+    const response = await server.get(`/reviews/user/${user.id}`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([
+      {
+        id: review.id,
+        rating: Number(review.rating),
+        text: review.text,
+        game: {
+          id: game.id,
+          name: game.name,
+          coverUrl: game.cover_url,
+          originalReleaseDate: game.original_realease_date.toISOString(),
+          genres: game.genres,
+          platforms: game.platforms,
+        },
+        upVotes: [],
+        downVotes: [],
+        createdAt: review.created_at.toISOString(),
+      },
+    ]);
+  });
+});
