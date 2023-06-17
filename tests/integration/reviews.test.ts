@@ -4,7 +4,7 @@ import supertest from "supertest";
 import app, { init } from "@/app";
 import { cleanDatabase, createValidReview } from "../helpers";
 import jwt from "jsonwebtoken";
-import { createUser, createReview, createGame } from "../factories";
+import { createUser, createGame } from "../factories";
 
 beforeAll(async () => {
   await init();
