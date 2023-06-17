@@ -1,6 +1,8 @@
+import httpStatus from "http-status";
+
 function unprocessableEntityError(message: string[]) {
   return {
-    status: 422,
+    status: httpStatus.UNPROCESSABLE_ENTITY,
     name: "UnprocessableEntityError",
     message,
   };
@@ -8,7 +10,7 @@ function unprocessableEntityError(message: string[]) {
 
 function emailConflictError(email: string) {
   return {
-    status: 409,
+    status: httpStatus.CONFLICT,
     name: "EmailConflictError",
     message: "There is already an user with given email",
     email,
@@ -17,7 +19,7 @@ function emailConflictError(email: string) {
 
 function unauthorizedError() {
   return {
-    status: 401,
+    status: httpStatus.UNAUTHORIZED,
     name: "UnauthorizedError",
     message: "You must be signed in to continue",
   };
@@ -25,7 +27,7 @@ function unauthorizedError() {
 
 function notFoundError() {
   return {
-    status: 404,
+    status: httpStatus.NOT_FOUND,
     name: "NotFoundError",
     message: "No result for this search!",
   };
@@ -33,7 +35,7 @@ function notFoundError() {
 
 function invalidCredentialsError() {
   return {
-    status: 401,
+    status: httpStatus.UNAUTHORIZED,
     name: "InvalidCredentialsError",
     message: "Email or password are incorrect",
   };
@@ -41,7 +43,7 @@ function invalidCredentialsError() {
 
 function badRequestError(message: string) {
   return {
-    status: 400,
+    status: httpStatus.BAD_REQUEST,
     name: "BadRequestError",
     message,
   };
@@ -49,7 +51,7 @@ function badRequestError(message: string) {
 
 function forbiddenError() {
   return {
-    status: 403,
+    status: httpStatus.FORBIDDEN,
     name: "ForbiddenError",
     message: "You are not allowed to do this",
   };
@@ -57,7 +59,7 @@ function forbiddenError() {
 
 function conflictError() {
   return {
-    status: 409,
+    status: httpStatus.CONFLICT,
     name: "ConflictError",
     message: "This resource already exists",
   };
