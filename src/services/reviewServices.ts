@@ -4,6 +4,7 @@ import {
   formatUserReviews,
 } from "@/helpers/review-format-helper";
 import { ReviewBody } from "@/protocols";
+import gameRepository from "@/repositories/gameRepository";
 import reviewRepository from "@/repositories/reviewRepository";
 
 async function validateUserReview(reviewId: number, userId: number) {
@@ -25,7 +26,15 @@ async function validateReview(userId: number, gameId: number) {
   }
 }
 
+async function validateGame(gameId: number) {
+  const game = await gameRepository.searchById(gameId);
+  if (!game) {
+    throw errors.notFoundError("Game not found");
+  }
+}
+
 async function createReview(userId: number, body: ReviewBody) {
+  await validateGame(body.game_id);
   await validateReview(userId, body.game_id);
   const review = await reviewRepository.createReview(
     userId,
