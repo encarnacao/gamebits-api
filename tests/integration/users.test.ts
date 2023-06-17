@@ -119,3 +119,26 @@ describe("POST /users/signin", () => {
     });
   });
 });
+
+describe("GET /users/:id", () => {
+  it("should return 404 if user is not found", async () => {
+    const response = await server.get(`/users/${faker.datatype.number()}`);
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return 422 if id is invalid", async () => {
+    const response = await server.get("/users/invalid-id");
+    expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+  });
+  it("should return 200 if user is found", async () => {
+    const user = await createUser();
+    const response = await server.get(`/users/${user.id}`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual({
+      id: user.id,
+      username: user.username,
+      imageUrl: user.image_url,
+      followers: 0,
+      following: 0,
+    });
+  });
+});
