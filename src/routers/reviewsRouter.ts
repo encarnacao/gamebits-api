@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import validateCredentials from "../middlewares/authMiddleware.js";
-import { validateBody, validateParams } from "../middlewares/validateSchema.js";
-import { reviewSchema } from "../schemas/reviewSchema.js";
+import validateCredentials from "@/middlewares/authMiddleware";
+import { validateBody, validateParams } from "@/middlewares";
+import { reviewSchema } from "@/schemas";
 import {
   createReview,
   deleteReview,

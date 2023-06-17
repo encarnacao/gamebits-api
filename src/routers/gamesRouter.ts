@@ -1,7 +1,6 @@
 import { getGameById } from "@/controllers/gamesController";
-import { validateParams, validateQuery } from "@/middlewares/validateSchema";
-import { searchSchema } from "@/schemas/gamesSchemas";
-import { paramsSchema } from "@/schemas/genericSchemas";
+import { validateParams, validateQuery } from "@/middlewares";
+import { searchSchema, paramsSchema } from "@/schemas";
 import { searchGame } from "@/services/gamesServices";
 import { Router } from "express";
 

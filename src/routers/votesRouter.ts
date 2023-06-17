@@ -5,8 +5,7 @@ import {
 } from "@/controllers/voteController";
 import validateCredentials from "@/middlewares/authMiddleware";
 import { validateBody, validateParams } from "@/middlewares/validateSchema";
-import { paramsSchema } from "@/schemas/genericSchemas";
-import { votingSchema } from "@/schemas/voteSchemas";
+import { paramsSchema, votingSchema } from "@/schemas";
 import { Router } from "express";
 
 const votesRouter = Router();

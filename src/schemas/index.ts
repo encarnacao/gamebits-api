@@ -1,5 +1,5 @@
 export * from "./gamesSchemas"
-export * from "./userSchema"
+export * from "./userSchemas"
 export * from "./reviewSchema"
 export * from "./voteSchemas"
 export * from "./genericSchemas"

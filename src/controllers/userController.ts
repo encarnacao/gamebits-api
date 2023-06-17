@@ -1,8 +1,8 @@
 import "dotenv/config";
 import { Request, Response, NextFunction } from "express";
-import userServices from "../services/userServices.js";
+import userServices from "@/services/userServices";
 import jwt from "jsonwebtoken";
-import { SignInBody, UserParams, idParams } from "@/protocols.js";
+import { SignInBody, UserParams } from "@/protocols";
 
 
 async function createUser(req: Request, res: Response, next: NextFunction) {
