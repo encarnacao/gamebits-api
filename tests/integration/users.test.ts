@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 import supertest from "supertest";
 import app, { init } from "@/app";
 import { cleanDatabase } from "../helpers";
-import { createUser } from "../factories/users-factory";
+import { createUser } from "../factories/";
 
 beforeAll(async () => {
   await init();
