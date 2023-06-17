@@ -3,16 +3,16 @@ import errors from "@/errors";
 import userRepository from "@/repositories/userRepository";
 
 async function checkConflict(req: Request, res: Response, next: NextFunction) {
-	const { email } = req.body;
-	try {
-		const user = await userRepository.findUserByEmail(email);
-		if (user) {
-			throw errors.emailConflictError(email);
-		}
-		next();
-	} catch (err) {
-		next(err);
-	}
+  const { email, username } = req.body;
+  try {
+    const conflict = await userRepository.findUser(email, username);
+    if (conflict) {
+      throw errors.conflictError();
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
 }
 
 export default { checkConflict };

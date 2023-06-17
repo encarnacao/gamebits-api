@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from "express";
 import userServices from "@/services/userServices";
 import jwt from "jsonwebtoken";
 import { SignInBody, UserParams } from "@/protocols";
+import httpStatus from "http-status";
+
 
 
 async function createUser(req: Request, res: Response, next: NextFunction) {
@@ -10,7 +12,7 @@ async function createUser(req: Request, res: Response, next: NextFunction) {
 	try {
 		const create = await userServices.createUser(userData);
 		delete create.password;
-		res.send(create);
+		res.status(httpStatus.CREATED).send(create);
 	} catch (err) {
 		next(err);
 	}

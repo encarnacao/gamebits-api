@@ -16,7 +16,7 @@ async function createUser(user: Prisma.usersCreateInput) {
 }
 
 async function getUserByEmail(body: SignInBody) {
-  const user = await userRepository.findUserByEmail(body.email);
+  const user = await userRepository.findUser(body.email);
   if (!user) {
     throw errors.invalidCredentialsError();
   }

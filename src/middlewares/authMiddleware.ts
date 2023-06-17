@@ -16,7 +16,7 @@ async function validateCredentials(
 	if (!token) throw errors.unauthorizedError();
 	try {
 		const session = jwt.verify(token, process.env.JWT_SECRET) as Session;
-		const user = await userRepository.findUserByEmail(session.email);
+		const user = await userRepository.findUser(session.email);
 		if (!user) throw errors.unauthorizedError();
 		delete user.password;
 		res.locals.user = user;
