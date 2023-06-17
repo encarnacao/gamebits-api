@@ -40,7 +40,7 @@ export function formatUserReviews(reviews: UnformattedUserReviews[]) {
     const newReview = {
       id: review.id,
       text: review.text,
-      rating: review.rating,
+      rating: Number(review.rating),
       game: {
         id: review.games.id,
         name: review.games.name,

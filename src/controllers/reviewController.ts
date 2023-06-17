@@ -25,9 +25,9 @@ async function getGameReviews(req: Request, res: Response, next: NextFunction) {
 }
 
 async function getUserReviews(req: Request, res: Response, next: NextFunction) {
-  const user: users = res.locals.user;
+  const { id } = req.params;
   try {
-    const reviews = await reviewServices.getUserReviews(user.id);
+    const reviews = await reviewServices.getUserReviews(Number(id));
     res.send(reviews);
   } catch (err) {
     next(err);
