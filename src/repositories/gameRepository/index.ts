@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/config";
 import { config } from "@/config/igdb-config";
 import { formatSingleGame } from "@/helpers/igdb-format-helper";
+import errors from "@/errors";
 
 async function getGameByIGDBId(igdb_id: number) {
   let search = await prisma.games.findFirst({
@@ -32,7 +33,9 @@ async function searchIGDB(igdb_id: number) {
       },
       body,
     });
-    const game = formatSingleGame(await response.json());
+    const responseBody = await response.json();
+    if (responseBody.length === 0) throw errors.notFoundError();
+    const game = formatSingleGame(responseBody);
     return game;
   } catch {
     console.log("error");
