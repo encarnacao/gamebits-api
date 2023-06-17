@@ -20,7 +20,7 @@ describe("POST /users/signup", () => {
     username: faker.name.firstName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
-  })
+  });
   it("should return 201 when signup is successful", async () => {
     const body = generateValidBody();
     const response = await server.post("/users/signup").send(body);
@@ -67,5 +67,55 @@ describe("POST /users/signup", () => {
     body.username = "       ";
     const response = await server.post("/users/signup").send(body);
     expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+  });
+});
+
+describe("POST /users/signin", () => {
+  const generateValidBody = () => ({
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+  });
+  it("should return 422 if email is invalid", async () => {
+    const body = generateValidBody();
+    body.email = "invalid-email";
+    const response = await server.post("/users/signin").send(body);
+    expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+  });
+  it("should return 422 if password is missing", async () => {
+    const body = generateValidBody();
+    delete body.password;
+    const response = await server.post("/users/signin").send(body);
+    expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+  });
+  it("should return 422 if email is missing", async () => {
+    const body = generateValidBody();
+    delete body.email;
+    const response = await server.post("/users/signin").send(body);
+    expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+  });
+  describe("when body is valid", () => {
+    it("should return 401 if not registered", async () => {
+      const body = generateValidBody();
+      const response = await server.post("/users/signin").send(body);
+      expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+    });
+    it("should return 401 if password is wrong", async () => {
+      const body = generateValidBody();
+      await createUser({ email: body.email, password: faker.lorem.word() });
+      const response = await server.post("/users/signin").send(body);
+      expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+    });
+    it("should return 200 if password is correct", async () => {
+      const body = generateValidBody();
+      const user = await createUser({
+        email: body.email,
+        password: body.password,
+      });
+      const response = await server.post("/users/signin").send(body);
+      expect(response.status).toBe(httpStatus.OK);
+      expect(response.body).toEqual({
+        token: expect.any(String),
+      });
+    });
   });
 });
