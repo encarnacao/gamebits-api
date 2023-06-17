@@ -1,7 +1,7 @@
 import { getGameById } from "@/controllers/gamesController";
 import { validateParams, validateQuery } from "@/middlewares";
 import { searchSchema, paramsSchema } from "@/schemas";
-import { searchGame } from "@/services/gamesServices";
+import { searchGame } from "@/controllers/gamesController";
 import { Router } from "express";
 
 const gamesRouter = Router();
