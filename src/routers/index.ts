@@ -1,10 +1,10 @@
 import { Router } from "express";
-import usersRouter from "./usersRouter.js";
-import gamesRouter from "./gamesRouter.js";
-import reviewsRouter from "./reviewsRouter.js";
-import votesRouter from "./votesRouter.js";
-import followsRouter from "./followsRouter.js";
-import librariesRouter from "./librariesRouter.js";
+import usersRouter from "./usersRouter";
+import gamesRouter from "./gamesRouter";
+import reviewsRouter from "./reviewsRouter";
+import votesRouter from "./votesRouter";
+import followsRouter from "./followsRouter";
+import librariesRouter from "./librariesRouter";
 
 const router = Router();
 

@@ -8,8 +8,8 @@ import {
   deleteReview,
   getGameReviews,
   getUserReviews,
-} from "@/controllers/reviewController.js";
-import { paramsSchema } from "@/schemas/genericSchemas.js";
+} from "@/controllers/reviewController";
+import { paramsSchema } from "@/schemas";
 
 const reviewsRouter = Router();
 

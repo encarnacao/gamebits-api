@@ -2,8 +2,8 @@ import "express-async-errors";
 import "dotenv/config";
 import cors from "cors";
 import express, { json } from "express";
-import router from "./routers/index.js";
-import { handleApplicationErrors } from "./middlewares/errorMiddleware.js";
+import router from "@/routers";
+import { handleApplicationErrors } from "@/middlewares";
 import { connectDb, disconnectDB, loadEnv } from "@/config";
 
 const app = express();
