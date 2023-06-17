@@ -9,10 +9,7 @@ async function createUser(user: Prisma.usersCreateInput) {
   const hashedPassword = bcrypt.hashSync(user.password, 10);
   user.password = hashedPassword;
   const createdUser = await userRepository.createUser(user);
-  if (createdUser) {
-    return createdUser;
-  }
-  return null;
+  return createdUser;
 }
 
 async function getUserByEmail(body: SignInBody) {
