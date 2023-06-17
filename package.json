@@ -13,7 +13,7 @@
 		"dev:seed": "npm run dev:load-envs prisma db seed",
 		"dev:load-envs": "dotenv -e .env.development",
 		"test": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand",
-		"test:coverage":"cross-venv NODE_ENV=test jest --coverage --passWithNoTests --runInBand",
+		"test:coverage":"cross-env NODE_ENV=test jest --coverage --passWithNoTests --runInBand",
 		"test:load-envs": "dotenv -e .env.test",
 		"test:seed": "npm run test:load-envs prisma db seed",
 		"test:migration:run": "npm run test:load-envs prisma migrate deploy",
