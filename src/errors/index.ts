@@ -8,15 +8,6 @@ function unprocessableEntityError(message: string[]) {
   };
 }
 
-function emailConflictError(email: string) {
-  return {
-    status: httpStatus.CONFLICT,
-    name: "EmailConflictError",
-    message: "There is already an user with given email",
-    email,
-  };
-}
-
 function unauthorizedError() {
   return {
     status: httpStatus.UNAUTHORIZED,
@@ -25,11 +16,11 @@ function unauthorizedError() {
   };
 }
 
-function notFoundError() {
+function notFoundError(message?: string) {
   return {
     status: httpStatus.NOT_FOUND,
     name: "NotFoundError",
-    message: "No result for this search!",
+    message: message || "No result for this search!",
   };
 }
 
@@ -67,7 +58,6 @@ function conflictError() {
 
 export default {
   unprocessableEntityError,
-  emailConflictError,
   unauthorizedError,
   notFoundError,
   invalidCredentialsError,
