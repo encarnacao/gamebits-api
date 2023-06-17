@@ -1,6 +1,5 @@
 import httpStatus from "http-status";
 import { faker } from "@faker-js/faker";
-import jwt from "jsonwebtoken";
 import supertest from "supertest";
 import app, { init } from "@/app";
 import { cleanDatabase } from "../helpers";
