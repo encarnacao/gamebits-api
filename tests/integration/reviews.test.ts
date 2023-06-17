@@ -2,7 +2,7 @@ import httpStatus from "http-status";
 import { faker } from "@faker-js/faker";
 import supertest from "supertest";
 import app, { init } from "@/app";
-import { cleanDatabase } from "../helpers";
+import { cleanDatabase, createValidReview } from "../helpers";
 import jwt from "jsonwebtoken";
 import { createUser, createReview, createGame } from "../factories";
 
@@ -95,7 +95,7 @@ describe("DELETE /reviews/:id", () => {
       const user = await createUser();
       const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
       const response = await server
-        .delete("/reviews/invalid")
+        .delete(`/reviews/${faker.lorem.word()}`)
         .set("Authorization", `Bearer ${token}`);
       expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
     });
@@ -109,24 +109,51 @@ describe("DELETE /reviews/:id", () => {
     });
     it("should return status 403 if user is not the review owner", async () => {
       const user = await createUser();
-      const otherUser = await createUser();
-      const game = await createGame();
+      const { review } = await createValidReview();
       const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
-      const review = await createReview(otherUser.id, game.id);
       const response = await server
         .delete(`/reviews/${review.id}`)
         .set("Authorization", `Bearer ${token}`);
       expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
     it("should return status 204 if user is the review owner", async () => {
-      const user = await createUser();
-      const game = await createGame();
+      const { user, review } = await createValidReview();
       const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
-      const review = await createReview(user.id, game.id);
       const response = await server
         .delete(`/reviews/${review.id}`)
         .set("Authorization", `Bearer ${token}`);
       expect(response.status).toBe(httpStatus.NO_CONTENT);
     });
+  });
+});
+
+describe("GET /reviews/:id", () => {
+  it("should return status 422 if params is invalid", async () => {
+    const response = await server.get(`/reviews/${faker.lorem.word()}`);
+    expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+  });
+  it("should return status 404 if there are no reviews for game id", async () => {
+    const response = await server.get("/reviews/1");
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return status 200 if there are reviews for game id", async () => {
+    const { game, user, review } = await createValidReview();
+    const response = await server.get(`/reviews/${game.id}`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([
+      {
+        id: review.id,
+        rating: Number(review.rating),
+        text: review.text,
+        reviewWriter: {
+          id: user.id,
+          username: user.username,
+          imageUrl: user.image_url,
+        },
+        upVotes: [],
+        downVotes: [],
+        createdAt: review.created_at.toISOString(),
+      },
+    ]);
   });
 });
