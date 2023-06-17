@@ -64,11 +64,9 @@ describe("POST /reviews", () => {
       expect(response.status).toBe(httpStatus.CREATED);
     });
     it("should return status 409 if user already reviewed the game", async () => {
-      const user = await createUser();
+      const { user, game } = await createValidReview();
       const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
-      const game = await createGame();
       const body = generateValidBody(game.id);
-      await createReview(user.id, game.id);
       const response = await server
         .post("/reviews")
         .set("Authorization", `Bearer ${token}`)
