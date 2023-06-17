@@ -19,7 +19,7 @@ export function formatReviews(reviews: UnformattedReviews[]) {
     const newReview = {
       id: review.id,
       text: review.text,
-      rating: review.rating,
+      rating: Number(review.rating),
       reviewWriter: {
         id: review.users.id,
         username: review.users.username,
@@ -27,6 +27,7 @@ export function formatReviews(reviews: UnformattedReviews[]) {
       },
       upVotes: upVotes,
       downVotes: downVotes,
+      createdAt: review.created_at,
     };
     return newReview;
   });
@@ -50,6 +51,7 @@ export function formatUserReviews(reviews: UnformattedUserReviews[]) {
       },
       upVotes: upVotes,
       downVotes: downVotes,
+      createdAt: review.created_at,
     };
     return newReview;
   });
