@@ -78,3 +78,67 @@ describe("POST /libraries/add/:id", () => {
     });
   });
 });
+
+describe("POST /libraries/wishlist/:id", () => {
+  it("should return 401 if no token is provided", async () => {
+    const response = await server.post(
+      `/libraries/wishlist/${faker.datatype.number()}`
+    );
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  it("should return 401 if token is invalid", async () => {
+    const token = faker.lorem.word();
+    const response = await server
+      .post(`/libraries/wishlist/${faker.datatype.number()}`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  describe("when token is valid", () => {
+    it("should return 422 if id is not a number", async () => {
+      const user = await createUser();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const response = await server
+        .post(`/libraries/wishlist/${faker.lorem.word()}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+    });
+    it("should return 404 if game does not exist", async () => {
+      const user = await createUser();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const response = await server
+        .post(`/libraries/wishlist/${faker.datatype.number()}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+    it("should return 409 if game is already in library", async () => {
+      const user = await createUser();
+      const game = await createGame();
+      await createLibraryEntry(user.id, game.id, true);
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const response = await server
+        .post(`/libraries/wishlist/${game.id}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.CONFLICT);
+    });
+    it("should return 201 if game is added to library", async () => {
+      const user = await createUser();
+      const game = await createGame();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const response = await server
+        .post(`/libraries/wishlist/${game.id}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.CREATED);
+      expect(response.body).toEqual({
+        id: expect.any(Number),
+        user_id: user.id,
+        game_id: game.id,
+        wishlist: true,
+        finished: false,
+        platinum: false,
+        completion_time: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      });
+    });
+  });
+});
