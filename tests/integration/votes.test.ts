@@ -88,3 +88,42 @@ describe("POST /votes", () => {
     });
   });
 });
+
+describe("DELETE /votes/:id", () => {
+  it("should return 401 when token is not provided", async () => {
+    const response = await server.delete("/votes/1");
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  it("should return 401 when token is invalid", async () => {
+    const token = faker.lorem.word();
+    const response = await server
+      .delete("/votes/1")
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  describe("when token is valid", () => {
+    it("should return 404 when vote does not exist", async () => {
+      const user = await createUser();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const { review } = await createValidReview();
+      const response = await server
+        .delete(`/votes/${review.id}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+    it("should return 204 when vote is deleted", async () => {
+      const user = await createUser();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const { review } = await createValidReview();
+      const vote = await createVote(
+        user.id,
+        review.id,
+        faker.datatype.boolean()
+      );
+      const response = await server
+        .delete(`/votes/${review.id}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NO_CONTENT);
+    });
+  });
+});
