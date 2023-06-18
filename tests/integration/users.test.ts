@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 import supertest from "supertest";
 import app, { init } from "@/app";
 import { cleanDatabase } from "../helpers";
-import { createUser } from "../factories/";
+import { createManyUsers, createUser } from "../factories/";
 
 beforeAll(async () => {
   await init();
@@ -139,5 +139,51 @@ describe("GET /users/:id", () => {
       followers: 0,
       following: 0,
     });
+  });
+});
+
+describe("GET /users/all", () => {
+  it("should return 200 and empty array if no users are found", async () => {
+    const response = await server.get("/users/all");
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([]);
+  });
+  it("should return 200 and array of users if users are found", async () => {
+    const users = await createManyUsers(5);
+    const response = await server.get("/users/");
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual(
+      users.map((user) => ({
+        id: user.id,
+        username: user.username,
+        imageUrl: user.image_url,
+        followers: 0,
+        following: 0,
+      }))
+    );
+  });
+});
+
+describe("GET /users/?username=", () => {
+  it("should return 200 and empty array if no users are found", async () => {
+    const response = await server.get("/users/?username=invalid-username");
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([]);
+  });
+  it("should return 200 and array of users if users are found", async () => {
+    const firstUser = await createUser({ username: "first-user" });
+    const secondUser = await createUser({ username: "second-user" });
+    const thirdUser = await createUser({ username: "unrelated" });
+    const response = await server.get("/users/?username=user");
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual(
+      [firstUser, secondUser].map((user) => ({
+        id: user.id,
+        username: user.username,
+        imageUrl: user.image_url,
+        followers: 0,
+        following: 0,
+      }))
+    );
   });
 });
