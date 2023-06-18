@@ -142,3 +142,45 @@ describe("POST /libraries/wishlist/:id", () => {
     });
   });
 });
+
+describe("DELETE /libraries/:id", () => {
+  it("should return 401 if no token is provided", async () => {
+    const response = await server.delete(
+      `/libraries/${faker.datatype.number()}`
+    );
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  it("should return 401 if token is invalid", async () => {
+    const token = faker.lorem.word();
+    const response = await server
+      .delete(`/libraries/${faker.datatype.number()}`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  describe("when token is valid", () => {
+    it("should return 422 if id is not a number", async () => {
+      const user = await createUser();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const response = await server
+        .delete(`/libraries/${faker.lorem.word()}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+    });
+    it("should return 404 if game does not exist in library", async () => {
+      const user = await createUser();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const response = await server
+        .delete(`/libraries/${faker.datatype.number()}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+    it("should return 204 if game is deleted from library", async () => {
+      const { user, game } = await createValidLibrary();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const response = await server
+        .delete(`/libraries/${game.id}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NO_CONTENT);
+    });
+  });
+});
