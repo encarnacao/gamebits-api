@@ -12,6 +12,16 @@ async function validateLibraryEntry(userId: number, gameId: number) {
   return library;
 }
 
+async function validateNewEntry(userId: number, gameId: number) {
+  const game = await gameRepository.searchById(gameId);
+  if (!game) throw errors.notFoundError();
+  const checkConflict = await libraryRepository.searchLibraryEntry(
+    userId,
+    gameId
+  );
+  if (checkConflict) throw errors.conflictError();
+}
+
 async function validateUpdate(entry: libraries, body: LibraryUpdate) {
   const updateInput: Prisma.librariesUpdateInput = {};
   if (entry.wishlist) {
@@ -48,8 +58,7 @@ export async function addGameToLibrary(
   gameId: number,
   isWishlist: boolean
 ) {
-  const game = await gameRepository.searchById(gameId);
-  if (!game) throw errors.notFoundError();
+  await validateNewEntry(userId, gameId);
   const library = await libraryRepository.addGameToLibrary(
     gameId,
     userId,
