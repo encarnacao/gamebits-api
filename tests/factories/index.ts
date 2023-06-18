@@ -3,3 +3,4 @@ export * from "./users-factory";
 export * from "./review-factory";
 export * from "./game-factory";
 export * from "./vote-factory";
+export * from "./library-factory";
