@@ -121,3 +121,37 @@ describe("DELETE /follows/:id", () => {
     });
   });
 });
+
+describe("GET /follows/:id/followers", () => {
+  it("should return status 422 if param is invalid", async () => {
+    const response = await server.get(
+      `/follows/${faker.lorem.word()}/followers`
+    );
+    expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+  });
+  it("should return status 404 if user is not found", async () => {
+    const response = await server.get(
+      `/follows/${faker.datatype.number()}/followers`
+    );
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return status 404 if user has no followers", async () => {
+    const user = await createUser();
+    const response = await server.get(`/follows/${user.id}/followers`);
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return status 200 and followers if user has followers", async () => {
+    const user = await createUser();
+    const followed = await createUser();
+    await createFollow(user.id, followed.id);
+    const response = await server.get(`/follows/${followed.id}/followers`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([
+      {
+        id: user.id,
+        username: user.username,
+        image_url: user.image_url,
+      },
+    ]);
+  });
+});
