@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 import supertest from "supertest";
 import app, { init } from "@/app";
 import { cleanDatabase } from "../helpers";
-import { createUser } from "../factories/";
+import { createManyUsers, createUser } from "../factories/";
 
 beforeAll(async () => {
   await init();
@@ -119,18 +119,18 @@ describe("POST /users/signin", () => {
   });
 });
 
-describe("GET /users/:id", () => {
+describe("GET /users/id/:id", () => {
   it("should return 404 if user is not found", async () => {
-    const response = await server.get(`/users/${faker.datatype.number()}`);
+    const response = await server.get(`/users/id/${faker.datatype.number()}`);
     expect(response.status).toBe(httpStatus.NOT_FOUND);
   });
   it("should return 422 if id is invalid", async () => {
-    const response = await server.get("/users/invalid-id");
+    const response = await server.get("/users/id/invalid-id");
     expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
   });
   it("should return 200 if user is found", async () => {
     const user = await createUser();
-    const response = await server.get(`/users/${user.id}`);
+    const response = await server.get(`/users/id/${user.id}`);
     expect(response.status).toBe(httpStatus.OK);
     expect(response.body).toEqual({
       id: user.id,
@@ -139,5 +139,62 @@ describe("GET /users/:id", () => {
       followers: 0,
       following: 0,
     });
+  });
+});
+
+describe("GET /users/all", () => {
+  it("should return 200 and empty array if no users are found", async () => {
+    const response = await server.get("/users/all");
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([]);
+  });
+  it("should return 200 and array of users if users are found", async () => {
+    const users = await createManyUsers(5);
+    const response = await server.get("/users/all");
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual(
+      users.map((user) => ({
+        id: user.id,
+        username: user.username,
+        imageUrl: user.image_url,
+        followers: 0,
+        following: 0,
+      }))
+    );
+  });
+});
+
+describe("GET /users/search?username=", () => {
+  it("should return 200 and empty array if no users are found", async () => {
+    const response = await server.get("/users/search?username=invalid-username");
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([]);
+  });
+  it("should return 200 and array of users if users are found", async () => {
+    const firstUser = await createUser({ username: "first-user" });
+    const secondUser = await createUser({ username: "second-user" });
+    const thirdUser = await createUser({ username: "unrelated" });
+    const response = await server.get("/users/search?username=user");
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual(
+      [firstUser, secondUser].map((user) => ({
+        id: user.id,
+        username: user.username,
+        imageUrl: user.image_url,
+        followers: 0,
+        following: 0,
+      }))
+    );
+    const newResponse = await server.get("/users/search?username=unrelated");
+    expect(newResponse.status).toBe(httpStatus.OK);
+    expect(newResponse.body).toEqual([
+      {
+        id: thirdUser.id,
+        username: thirdUser.username,
+        imageUrl: thirdUser.image_url,
+        followers: 0,
+        following: 0,
+      },
+    ]);
   });
 });

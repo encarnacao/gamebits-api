@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tspc",
-    "migration": "prisma migrate deploy",
+    "migrate": "prisma migrate deploy",
     "generate": "prisma generate",
     "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
     "dev:pull": "npm run dev:load-envs prisma db pull",
@@ -20,7 +20,7 @@
     "test:migration:run": "npm run test:load-envs prisma migrate deploy",
     "test:migration:generate": "npm run test:load-envs prisma migrate dev",
     "test:watch": "cross-env NODE_ENV=test jest --watch --passWithNoTests --runInBand",
-    "start": "node dist/src/server.js"
+    "start": "npm run migrate && npm run generate && node dist/src/server.js"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

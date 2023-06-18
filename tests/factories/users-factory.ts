@@ -14,3 +14,11 @@ export async function createUser(params: Partial<users> = {}) {
     },
   });
 }
+
+export async function createManyUsers(amount: number) {
+  const users = [];
+  for (let i = 0; i < amount; i++) {
+    users.push(await createUser());
+  }
+  return users;
+}
