@@ -27,8 +27,33 @@ async function findUserById(id: number) {
   });
 }
 
+async function findUsersByUsername(username: string) {
+  return await prisma.users.findMany({
+    where: {
+      username: {
+        contains: username,
+      },
+    },
+    include: {
+      follows_follows_followedTousers: true,
+      follows_follows_followingTousers: true,
+    },
+  });
+}
+
+async function findAllUsers() {
+  return await prisma.users.findMany({
+    include: {
+      follows_follows_followedTousers: true,
+      follows_follows_followingTousers: true,
+    },
+  });
+}
+
 export default {
   createUser,
   findUser,
   findUserById,
+  findUsersByUsername,
+  findAllUsers,
 };

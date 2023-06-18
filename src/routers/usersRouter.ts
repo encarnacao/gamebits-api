@@ -1,8 +1,22 @@
 import { Router } from "express";
-import { validateBody, validateParams } from "../middlewares/validateSchema";
-import { userSchema, userSignInSchema } from "../schemas/userSchemas";
+import {
+  validateBody,
+  validateParams,
+  validateQuery,
+} from "../middlewares/validateSchema";
+import {
+  userQuerySchema,
+  userSchema,
+  userSignInSchema,
+} from "../schemas/userSchemas";
 import userMiddleware from "@/middlewares/userMiddleware";
-import { createUser, findUser, signIn } from "@/controllers/userController";
+import {
+  createUser,
+  findAllUsers,
+  findUser,
+  findUsers,
+  signIn,
+} from "@/controllers/userController";
 import { paramsSchema } from "@/schemas/genericSchemas";
 
 const usersRouter = Router();
@@ -14,6 +28,8 @@ usersRouter
     createUser
   )
   .post("/signin", validateBody(userSignInSchema), signIn)
-  .get("/:id", validateParams(paramsSchema), findUser);
+  .get("/id/:id", validateParams(paramsSchema), findUser)
+  .get("/search", validateQuery(userQuerySchema), findUsers)
+  .get("/all", findAllUsers);
 
 export default usersRouter;

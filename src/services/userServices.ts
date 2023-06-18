@@ -33,4 +33,22 @@ async function getUserById(id: number) {
   return user;
 }
 
-export default { createUser, getUserByEmail, getUserById };
+async function findUsersByUsername(username: string) {
+  const search = await userRepository.findUsersByUsername(username);
+  const users = search.map((user) => formatUser(user));
+  return users;
+}
+
+async function findAllUsers() {
+  const search = await userRepository.findAllUsers();
+  const users = search.map((user) => formatUser(user));
+  return users;
+}
+
+export default {
+  createUser,
+  getUserByEmail,
+  getUserById,
+  findUsersByUsername,
+  findAllUsers,
+};
