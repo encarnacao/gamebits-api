@@ -45,7 +45,7 @@ export function formatUserReviews(reviews: UnformattedUserReviews[]) {
         id: review.games.id,
         name: review.games.name,
         coverUrl: review.games.cover_url,
-        originalReleaseDate: review.games.original_realease_date,
+        originalReleaseDate: review.games.original_release_date,
         genres: review.games.genres,
         platforms: review.games.platforms,
       },

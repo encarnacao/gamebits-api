@@ -12,7 +12,7 @@ async function getGameByIGDBId(igdb_id: number) {
   });
   if (!search) {
     const game = await searchIGDB(igdb_id);
-    if (game.original_realease_date !== "Não lançado") {
+    if (game.original_release_date !== "Não lançado") {
       search = await createGameEntry(game);
     } else {
       return { ...game, id: -1 };

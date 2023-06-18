@@ -44,7 +44,7 @@ export function formatSingleGame(response: singleGameResponse[]): GameEntity {
     igdb_id: id,
     cover_url: coverUrl,
     name,
-    original_realease_date: releaseDate,
+    original_release_date: releaseDate,
     platforms: platformNames,
     genres: genreNames,
   };
