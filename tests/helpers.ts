@@ -22,9 +22,19 @@ export async function createValidReview() {
   return { user, game, review };
 }
 
-export async function createValidLibrary(wishlist: boolean = false) {
+export async function createValidLibrary(
+  wishlist: boolean = false,
+  finished: boolean = false,
+  platinum: boolean = false
+) {
   const user = await createUser();
   const game = await createGame();
-  const library = await createLibraryEntry(user.id, game.id, wishlist);
+  const library = await createLibraryEntry(
+    user.id,
+    game.id,
+    wishlist,
+    finished,
+    platinum
+  );
   return { user, game, library };
 }
