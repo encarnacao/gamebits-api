@@ -1,4 +1,4 @@
-import { userSchema, userSignInSchema } from "@/schemas";
+import { userQuerySchema, userSchema, userSignInSchema } from "@/schemas";
 import { faker } from "@faker-js/faker";
 
 describe("userSchema", () => {
@@ -86,6 +86,39 @@ describe("userSignInSchema", () => {
       email: faker.internet.email(),
     };
     const { error } = userSignInSchema.validate(user);
+    expect(error).toBeDefined();
+  });
+});
+
+describe("userQuerySchema", () => {
+  const generateValidInput = () => ({
+    username: faker.internet.userName(),
+  });
+
+  it("should return undefined if input is valid", () => {
+    const user = generateValidInput();
+    const { error } = userQuerySchema.validate(user);
+    expect(error).toBeUndefined();
+  });
+
+  it("should return an error if username is missing", () => {
+    const user = {};
+    const { error } = userQuerySchema.validate(user);
+    expect(error).toBeDefined();
+  });
+
+  it("should return an error if username is invalid", () => {
+    const user = {
+      username: faker.lorem.word({ length: { min: 1, max: 2 } }),
+    };
+    const { error } = userQuerySchema.validate(user);
+    expect(error).toBeDefined();
+  });
+  it("should return an error if username is composed of whitespaces", () => {
+    const user = {
+      username: "    ",
+    };
+    const { error } = userQuerySchema.validate(user);
     expect(error).toBeDefined();
   });
 });
