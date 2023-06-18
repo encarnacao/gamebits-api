@@ -1,8 +1,7 @@
 import { getGameById } from "@/controllers/gamesController";
-import { validateParams, validateQuery } from "@/middlewares/validateSchema";
-import { searchSchema } from "@/schemas/gamesSchemas";
-import { paramsSchema } from "@/schemas/genericSchemas";
-import { searchGame } from "@/services/gamesServices";
+import { validateParams, validateQuery } from "@/middlewares";
+import { searchSchema, paramsSchema } from "@/schemas";
+import { searchGame } from "@/controllers/gamesController";
 import { Router } from "express";
 
 const gamesRouter = Router();

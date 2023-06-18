@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { validateBody, validateParams } from "../middlewares/validateSchema.js";
-import { userSchema, userSignInSchema } from "../schemas/userSchema.js";
-import userMiddleware from "../middlewares/userMiddleware.js";
-import { createUser, findUser, signIn } from "@/controllers/userController.js";
-import { paramsSchema } from "@/schemas/genericSchemas.js";
+import { validateBody, validateParams } from "../middlewares/validateSchema";
+import { userSchema, userSignInSchema } from "../schemas/userSchemas";
+import userMiddleware from "@/middlewares/userMiddleware";
+import { createUser, findUser, signIn } from "@/controllers/userController";
+import { paramsSchema } from "@/schemas/genericSchemas";
 
 const usersRouter = Router();
 usersRouter

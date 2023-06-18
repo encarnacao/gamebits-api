@@ -18,18 +18,18 @@ model follows {
 }
 
 model games {
-  id                     Int          @id @default(autoincrement())
-  igdb_id                Int          @unique
-  name                   String       @db.VarChar(255)
-  cover_url              String       @db.VarChar(255)
-  original_realease_date DateTime     @db.Date
-  platforms              String       @db.VarChar(255)
-  genres                 String?      @db.VarChar(255)
-  created_at             DateTime     @default(now()) @db.Timestamp(6)
-  updated_at             DateTime     @default(now()) @db.Timestamp(6)
-  games_tags             games_tags[]
-  libraries              libraries[]
-  reviews                reviews[]
+  id                    Int          @id @default(autoincrement())
+  igdb_id               Int          @unique
+  name                  String       @db.VarChar(255)
+  cover_url             String       @db.VarChar(255)
+  original_release_date DateTime     @db.Date
+  platforms             String       @db.VarChar(255)
+  genres                String?      @db.VarChar(255)
+  created_at            DateTime     @default(now()) @db.Timestamp(6)
+  updated_at            DateTime     @default(now()) @db.Timestamp(6)
+  games_tags            games_tags[]
+  libraries             libraries[]
+  reviews               reviews[]
 }
 
 model games_tags {

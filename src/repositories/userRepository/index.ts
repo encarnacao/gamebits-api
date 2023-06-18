@@ -7,10 +7,10 @@ async function createUser(user: Prisma.usersCreateInput) {
   });
 }
 
-async function findUserByEmail(email: string) {
-  return await prisma.users.findUnique({
+async function findUser(email: string, username?: string) {
+  return await prisma.users.findFirst({
     where: {
-      email,
+      OR: [{ email }, { username }],
     },
   });
 }
@@ -23,8 +23,12 @@ async function findUserById(id: number) {
     include: {
       follows_follows_followedTousers: true,
       follows_follows_followingTousers: true,
-    }
+    },
   });
 }
 
-export default { createUser, findUserByEmail, findUserById };
+export default {
+  createUser,
+  findUser,
+  findUserById,
+};

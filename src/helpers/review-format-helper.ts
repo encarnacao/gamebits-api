@@ -19,7 +19,7 @@ export function formatReviews(reviews: UnformattedReviews[]) {
     const newReview = {
       id: review.id,
       text: review.text,
-      rating: review.rating,
+      rating: Number(review.rating),
       reviewWriter: {
         id: review.users.id,
         username: review.users.username,
@@ -27,6 +27,7 @@ export function formatReviews(reviews: UnformattedReviews[]) {
       },
       upVotes: upVotes,
       downVotes: downVotes,
+      createdAt: review.created_at,
     };
     return newReview;
   });
@@ -39,17 +40,18 @@ export function formatUserReviews(reviews: UnformattedUserReviews[]) {
     const newReview = {
       id: review.id,
       text: review.text,
-      rating: review.rating,
+      rating: Number(review.rating),
       game: {
         id: review.games.id,
         name: review.games.name,
         coverUrl: review.games.cover_url,
-        originalReleaseDate: review.games.original_realease_date,
+        originalReleaseDate: review.games.original_release_date,
         genres: review.games.genres,
         platforms: review.games.platforms,
       },
       upVotes: upVotes,
       downVotes: downVotes,
+      createdAt: review.created_at,
     };
     return newReview;
   });

@@ -1,4 +1,5 @@
 import errors from "@/errors";
+import reviewRepository from "@/repositories/reviewRepository";
 import voteRepository from "@/repositories/voteRepository";
 
 async function checkForVote(reviewId: number, userId: number) {
@@ -6,7 +7,15 @@ async function checkForVote(reviewId: number, userId: number) {
   return vote;
 }
 
+async function checkForReview(reviewId: number) {
+  const review = await reviewRepository.searchReview(reviewId);
+  if(!review) {
+    throw errors.notFoundError("Review not found");
+  }
+}
+
 async function createVote(reviewId: number, userId: number, upVote: boolean) {
+  await checkForReview(reviewId);
   const conflictCheck = await checkForVote(reviewId, userId);
   if (conflictCheck) {
     throw errors.conflictError();
@@ -30,7 +39,6 @@ async function deleteVote(reviewId: number, userId: number) {
     throw errors.notFoundError();
   }
   await voteRepository.deleteVote(vote.id);
-  return { message: "Vote deleted successfully" };
 }
 
 const voteServices = {

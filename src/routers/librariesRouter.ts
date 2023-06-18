@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { validateBody, validateParams } from "../middlewares/validateSchema.js";
-import validateCredentials from "@/middlewares/authMiddleware.js";
-import { libraryUpdateSchema } from "@/schemas/librarySchemas.js";
+import { validateBody, validateParams } from "@/middlewares";
+import validateCredentials from "@/middlewares/authMiddleware";
 import {
   addGame,
   removeGame,
   updateEntry,
-} from "@/controllers/libraryController.js";
-import { paramsSchema } from "@/schemas/genericSchemas.js";
+  getLibrary,
+} from "@/controllers/libraryController";
+import { paramsSchema, libraryUpdateSchema } from "@/schemas";
 
 const librariesRouter = Router();
 
@@ -31,6 +31,8 @@ librariesRouter
     validateParams(paramsSchema),
     validateBody(libraryUpdateSchema),
     updateEntry
-  );
+  )
+  .get("/:id", validateParams(paramsSchema), getLibrary(false))
+  .get("/wishlist/:id", validateParams(paramsSchema), getLibrary(true));
 
 export default librariesRouter;

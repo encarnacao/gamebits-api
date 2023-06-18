@@ -1,5 +1,6 @@
 import errors from "@/errors";
 import followRepository from "@/repositories/followRepository";
+import userRepository from "@/repositories/userRepository";
 
 async function checkFollow(userId: number, followedId: number) {
   if (userId === followedId) {
@@ -10,6 +11,10 @@ async function checkFollow(userId: number, followedId: number) {
 }
 
 async function followUser(userId: number, followedId: number) {
+  const user = await userRepository.findUserById(followedId);
+  if (!user) {
+    throw errors.notFoundError();
+  }
   const follow = await checkFollow(userId, followedId);
   if (follow) {
     throw errors.conflictError();
@@ -23,7 +28,6 @@ async function unfollowUser(userId: number, followedId: number) {
     throw errors.notFoundError();
   }
   await followRepository.unfollowUser(follow.id);
-  return { message: "Unfollowed successfully" };
 }
 
 async function getFollowers(userId: number) {

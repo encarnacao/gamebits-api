@@ -6,8 +6,8 @@ import {
   getFollowing,
 } from "@/controllers/followController";
 import validateCredentials from "@/middlewares/authMiddleware";
-import { validateParams } from "@/middlewares/validateSchema";
-import { paramsSchema } from "@/schemas/genericSchemas";
+import { validateParams } from "@/middlewares";
+import { paramsSchema } from "@/schemas";
 
 const followsRouter = Router();
 

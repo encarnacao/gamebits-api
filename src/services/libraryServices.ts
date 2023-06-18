@@ -1,15 +1,9 @@
 import errors from "@/errors";
+import { formatLibrary } from "@/helpers/library-format-helper";
 import { LibraryUpdate } from "@/protocols";
 import gameRepository from "@/repositories/gameRepository";
 import libraryRepository from "@/repositories/libraryRepository";
 import { Prisma, libraries } from "@prisma/client";
-
-async function validateGame(gameId: number) {
-  const game = await gameRepository.searchById(gameId);
-  if (!game) {
-    throw errors.notFoundError();
-  }
-}
 
 async function validateLibraryEntry(userId: number, gameId: number) {
   const library = await libraryRepository.searchLibraryEntry(userId, gameId);
@@ -17,6 +11,16 @@ async function validateLibraryEntry(userId: number, gameId: number) {
     throw errors.notFoundError();
   }
   return library;
+}
+
+async function validateNewEntry(userId: number, gameId: number) {
+  const game = await gameRepository.searchById(gameId);
+  if (!game) throw errors.notFoundError();
+  const checkConflict = await libraryRepository.searchLibraryEntry(
+    userId,
+    gameId
+  );
+  if (checkConflict) throw errors.conflictError();
 }
 
 async function validateUpdate(entry: libraries, body: LibraryUpdate) {
@@ -55,23 +59,24 @@ export async function addGameToLibrary(
   gameId: number,
   isWishlist: boolean
 ) {
-  validateGame(gameId);
+  await validateNewEntry(userId, gameId);
   const library = await libraryRepository.addGameToLibrary(
-    userId,
     gameId,
+    userId,
     isWishlist
   );
   return library;
 }
 
 export async function searchLibrary(userId: number, isWishlist: boolean) {
-  const library = await libraryRepository.searchLibrary(userId, isWishlist);
-  if (library.length === 0) throw errors.notFoundError();
+  const search = await libraryRepository.searchLibrary(userId, isWishlist);
+  if (search.length === 0) throw errors.notFoundError();
+  const library = formatLibrary(search);
   return library;
 }
 
-export async function removeFromLibrary(userId: number, libraryId: number) {
-  const library = await validateLibraryEntry(userId, libraryId);
+export async function removeFromLibrary(userId: number, gameId: number) {
+  const library = await validateLibraryEntry(userId, gameId);
   await libraryRepository.removeGameFromLibrary(library.id);
 }
 
@@ -93,6 +98,7 @@ const libraryServices = {
   addGameToLibrary,
   removeFromLibrary,
   updateEntry,
+  searchLibrary,
 };
 
 export default libraryServices;

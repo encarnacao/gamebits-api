@@ -75,7 +75,7 @@ export type GameEntity = Pick<
   | "igdb_id"
   | "name"
   | "cover_url"
-  | "original_realease_date"
+  | "original_release_date"
   | "genres"
   | "platforms"
 >;
