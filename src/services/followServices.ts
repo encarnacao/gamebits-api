@@ -28,7 +28,6 @@ async function unfollowUser(userId: number, followedId: number) {
     throw errors.notFoundError();
   }
   await followRepository.unfollowUser(follow.id);
-  return { message: "Unfollowed successfully" };
 }
 
 async function getFollowers(userId: number) {

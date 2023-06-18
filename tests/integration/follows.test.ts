@@ -79,3 +79,45 @@ describe("POST /follows", () => {
     });
   });
 });
+
+describe("DELETE /follows/:id", () => {
+  it("should return status 401 when token is not provided", async () => {
+    const response = await server.delete(`/follows/${faker.datatype.number()}`);
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  it("should return status 401 when token is invalid", async () => {
+    const token = faker.lorem.word();
+    const response = await server
+      .delete(`/follows/${faker.datatype.number()}`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  describe("when token is valid", () => {
+    it("should return status 422 when id is invalid", async () => {
+      const user = await createUser();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const response = await server
+        .delete(`/follows/${faker.lorem.word()}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+    });
+    it("should return status 404 when user is not found", async () => {
+      const user = await createUser();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const response = await server
+        .delete(`/follows/${faker.datatype.number()}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
+    });
+    it("should return status 204 when user unfollows someone successfully", async () => {
+      const user = await createUser();
+      const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+      const followed = await createUser();
+      await createFollow(user.id, followed.id);
+      const response = await server
+        .delete(`/follows/${followed.id}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.NO_CONTENT);
+    });
+  });
+});
