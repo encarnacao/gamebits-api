@@ -5,6 +5,7 @@ import {
   addGame,
   removeGame,
   updateEntry,
+  getLibrary,
 } from "@/controllers/libraryController";
 import { paramsSchema, libraryUpdateSchema } from "@/schemas";
 
@@ -30,6 +31,8 @@ librariesRouter
     validateParams(paramsSchema),
     validateBody(libraryUpdateSchema),
     updateEntry
-  );
+  )
+  .get("/:id", validateParams(paramsSchema), getLibrary(false))
+  .get("/wishlist/:id", validateParams(paramsSchema), getLibrary(true));
 
 export default librariesRouter;

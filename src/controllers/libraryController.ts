@@ -21,6 +21,18 @@ function addGame(isWishlist: boolean) {
   };
 }
 
+function getLibrary(isWishlist: boolean) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    try {
+      const library = await libraryServices.searchLibrary(Number(id), isWishlist);
+      res.status(httpStatus.OK).send(library);
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
 async function removeGame(req: Request, res: Response, next: NextFunction) {
   const user: users = res.locals.user;
   const { id } = req.params;
@@ -44,4 +56,4 @@ async function updateEntry(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { addGame, removeGame, updateEntry };
+export { addGame, removeGame, updateEntry, getLibrary };

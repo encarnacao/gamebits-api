@@ -355,7 +355,7 @@ describe("PUT /libraries/:id", () => {
   });
 });
 
-describe("GET /libraries/:userId", () => {
+describe("GET /libraries/:id", () => {
   it("should return 404 if user does not exist", async () => {
     const response = await server.get(`/libraries/${faker.datatype.number()}`);
     expect(response.status).toBe(httpStatus.NOT_FOUND);
@@ -376,7 +376,7 @@ describe("GET /libraries/:userId", () => {
           id: game.id,
           name: game.name,
           cover: game.cover_url,
-          originalRelease: game.original_release_date.toISOString(),
+          originalReleaseDate: game.original_release_date.toISOString(),
           genres: game.genres,
           platforms: game.platforms,
         },
@@ -391,7 +391,7 @@ describe("GET /libraries/:userId", () => {
   });
 });
 
-describe("GET /libraries/wishlist/:userId", () => {
+describe("GET /libraries/wishlist/:id", () => {
   it("should return 404 if user does not exist", async () => {
     const response = await server.get(
       `/libraries/wishlist/${faker.datatype.number()}`
@@ -414,7 +414,7 @@ describe("GET /libraries/wishlist/:userId", () => {
           id: game.id,
           name: game.name,
           cover: game.cover_url,
-          originalRelease: game.original_release_date.toISOString(),
+          originalReleaseDate: game.original_release_date.toISOString(),
           genres: game.genres,
           platforms: game.platforms,
         },

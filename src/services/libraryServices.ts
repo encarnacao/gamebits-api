@@ -1,4 +1,5 @@
 import errors from "@/errors";
+import { formatLibrary } from "@/helpers/library-format-helper";
 import { LibraryUpdate } from "@/protocols";
 import gameRepository from "@/repositories/gameRepository";
 import libraryRepository from "@/repositories/libraryRepository";
@@ -68,8 +69,9 @@ export async function addGameToLibrary(
 }
 
 export async function searchLibrary(userId: number, isWishlist: boolean) {
-  const library = await libraryRepository.searchLibrary(userId, isWishlist);
-  if (library.length === 0) throw errors.notFoundError();
+  const search = await libraryRepository.searchLibrary(userId, isWishlist);
+  if (search.length === 0) throw errors.notFoundError();
+  const library = formatLibrary(search);
   return library;
 }
 
@@ -96,6 +98,7 @@ const libraryServices = {
   addGameToLibrary,
   removeFromLibrary,
   updateEntry,
+  searchLibrary,
 };
 
 export default libraryServices;

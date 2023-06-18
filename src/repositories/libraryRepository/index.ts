@@ -36,6 +36,7 @@ async function searchLibraryEntry(user_id: number, game_id: number) {
 async function searchLibrary(user_id: number, wishlist: boolean) {
   return await prisma.libraries.findMany({
     where: { user_id, wishlist },
+    include: { games: true },
   });
 }
 
