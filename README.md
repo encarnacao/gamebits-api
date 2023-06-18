@@ -6,6 +6,9 @@ This started as a simple project to study TypeScript, as a Proof of Concept, and
 -   Express Async Erros
 -   JOI
 -   Bcrypt
+-   Jest
+-   Supertest
+-   Faker
 
 ## How to run
 
@@ -97,24 +100,50 @@ Response - `200 OK`
 ```
 </details>
 
+<details>
+<summary><code>GET</code> <code>/games/:gameId</code></summary>
+
+Response - `200 OK`
+
+```json
+{
+		"id": 1,
+		"igdb_id": 239064,
+		"cover_url": "https://images.igdb.com/igdb/image/upload/t_cover_big/co66qs.jpg",
+		"name": "Grand Theft Auto V",
+		"original_release_date": "14/06/2022",
+		"platforms": "PS4, XONE, PS5, Series X",
+		"genres": "Action, Adventure, Shooter",
+		
+}
+```
+</details>
+
 ## Features
 
 -   [x] Create User
 -   [x] Login
 -   [X] Search Games
+-   [X] Create Review
+-   [X] Delete Review
+-   [X] Add/Remove games to library
+-   [X] Add/Remove games to wishlist
+-   [X] Mark games as completed
+-   [X] Mark if game has a platinum trophy
+-   [X] Get Reviews from Game
+-   [X] Get Reviews from User
+-   [X] Vote on Review
+-   [X] Follow Users
+-   [X] Integrate with an Game Database API to get more information about games (IGDB)
+-   [X] Implement testing
 
 
 ## Planned Features
 
 I'm planning to continue this project, so I'll add more features in the future.
--   [ ] Create Review
 -   [ ] Comment Review
 -   [ ] Delete Comments
 -   [ ] Edit Comments
 -   [ ] Edit Review
--   [ ] Delete Review
--   [ ] Follow Users
 -   [ ] Add completion time to reviews
 -   [ ] Add review images
--   [ ] Integrate with an Game Database API to get more information about games
--   [ ] Implement testing
