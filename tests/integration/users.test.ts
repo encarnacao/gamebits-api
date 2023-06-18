@@ -150,7 +150,7 @@ describe("GET /users/all", () => {
   });
   it("should return 200 and array of users if users are found", async () => {
     const users = await createManyUsers(5);
-    const response = await server.get("/users/");
+    const response = await server.get("/users/all");
     expect(response.status).toBe(httpStatus.OK);
     expect(response.body).toEqual(
       users.map((user) => ({
