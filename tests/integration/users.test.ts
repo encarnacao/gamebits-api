@@ -185,5 +185,16 @@ describe("GET /users/?username=", () => {
         following: 0,
       }))
     );
+    const newResponse = await server.get("/users/?username=unrelated");
+    expect(newResponse.status).toBe(httpStatus.OK);
+    expect(newResponse.body).toEqual([
+      {
+        id: thirdUser.id,
+        username: thirdUser.username,
+        imageUrl: thirdUser.image_url,
+        followers: 0,
+        following: 0,
+      },
+    ]);
   });
 });
