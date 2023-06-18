@@ -178,7 +178,7 @@ describe("GET /reviews/user/:id", () => {
           id: game.id,
           name: game.name,
           coverUrl: game.cover_url,
-          originalReleaseDate: game.original_realease_date.toISOString(),
+          originalReleaseDate: game.original_release_date.toISOString(),
           genres: game.genres,
           platforms: game.platforms,
         },

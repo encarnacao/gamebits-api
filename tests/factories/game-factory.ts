@@ -9,7 +9,7 @@ export async function createGame(){
       cover_url: faker.image.imageUrl(),
       platforms: faker.lorem.words(3),
       genres: faker.lorem.words(3),
-      original_realease_date: faker.date.past(),
+      original_release_date: faker.date.past(),
     }
   })
 }
