@@ -73,8 +73,8 @@ export async function searchLibrary(userId: number, isWishlist: boolean) {
   return library;
 }
 
-export async function removeFromLibrary(userId: number, libraryId: number) {
-  const library = await validateLibraryEntry(userId, libraryId);
+export async function removeFromLibrary(userId: number, gameId: number) {
+  const library = await validateLibraryEntry(userId, gameId);
   await libraryRepository.removeGameFromLibrary(library.id);
 }
 
