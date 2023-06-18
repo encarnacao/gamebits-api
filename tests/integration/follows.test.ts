@@ -155,3 +155,37 @@ describe("GET /follows/:id/followers", () => {
     ]);
   });
 });
+
+describe("GET /follows/:id/following", () => {
+  it("should return status 422 if param is invalid", async () => {
+    const response = await server.get(
+      `/follows/${faker.lorem.word()}/following`
+    );
+    expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
+  });
+  it("should return status 404 if user is not found", async () => {
+    const response = await server.get(
+      `/follows/${faker.datatype.number()}/following`
+    );
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return status 404 if user is not following anyone", async () => {
+    const user = await createUser();
+    const response = await server.get(`/follows/${user.id}/following`);
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return status 200 and following if user is following someone", async () => {
+    const user = await createUser();
+    const followed = await createUser();
+    await createFollow(user.id, followed.id);
+    const response = await server.get(`/follows/${user.id}/following`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([
+      {
+        id: followed.id,
+        username: followed.username,
+        image_url: followed.image_url,
+      },
+    ]);
+  });
+});
