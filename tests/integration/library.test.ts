@@ -354,3 +354,77 @@ describe("PUT /libraries/:id", () => {
     });
   });
 });
+
+describe("GET /libraries/:userId", () => {
+  it("should return 404 if user does not exist", async () => {
+    const response = await server.get(`/libraries/${faker.datatype.number()}`);
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return 404 if user does not have any game in library", async () => {
+    const user = await createUser();
+    const response = await server.get(`/libraries/${user.id}`);
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return 200 and list of games in library", async () => {
+    const { user, game, library } = await createValidLibrary();
+    const response = await server.get(`/libraries/${user.id}`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([
+      {
+        id: library.id,
+        game: {
+          id: game.id,
+          name: game.name,
+          cover: game.cover_url,
+          originalRelease: game.original_release_date.toISOString(),
+          genres: game.genres,
+          platforms: game.platforms,
+        },
+        finished: library.finished,
+        platinum: library.platinum,
+        wishlist: library.wishlist,
+        completion_time: library.completion_time,
+        created_at: library.created_at.toISOString(),
+        updated_at: library.updated_at.toISOString(),
+      },
+    ]);
+  });
+});
+
+describe("GET /libraries/wishlist/:userId", () => {
+  it("should return 404 if user does not exist", async () => {
+    const response = await server.get(
+      `/libraries/wishlist/${faker.datatype.number()}`
+    );
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return 404 if user does not have any game in wishlist", async () => {
+    const user = await createUser();
+    const response = await server.get(`/libraries/wishlist/${user.id}`);
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return 200 and list of games in wishlist", async () => {
+    const { user, game, library } = await createValidLibrary(true);
+    const response = await server.get(`/libraries/wishlist/${user.id}`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual([
+      {
+        id: library.id,
+        game: {
+          id: game.id,
+          name: game.name,
+          cover: game.cover_url,
+          originalRelease: game.original_release_date.toISOString(),
+          genres: game.genres,
+          platforms: game.platforms,
+        },
+        finished: library.finished,
+        platinum: library.platinum,
+        wishlist: library.wishlist,
+        completion_time: library.completion_time,
+        created_at: library.created_at.toISOString(),
+        updated_at: library.updated_at.toISOString(),
+      },
+    ]);
+  });
+});
