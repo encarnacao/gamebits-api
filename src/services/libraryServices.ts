@@ -4,13 +4,6 @@ import gameRepository from "@/repositories/gameRepository";
 import libraryRepository from "@/repositories/libraryRepository";
 import { Prisma, libraries } from "@prisma/client";
 
-async function validateGame(gameId: number) {
-  const game = await gameRepository.searchById(gameId);
-  if (!game) {
-    throw errors.notFoundError();
-  }
-}
-
 async function validateLibraryEntry(userId: number, gameId: number) {
   const library = await libraryRepository.searchLibraryEntry(userId, gameId);
   if (!library) {
@@ -55,10 +48,11 @@ export async function addGameToLibrary(
   gameId: number,
   isWishlist: boolean
 ) {
-  validateGame(gameId);
+  const game = await gameRepository.searchById(gameId);
+  if (!game) throw errors.notFoundError();
   const library = await libraryRepository.addGameToLibrary(
-    userId,
     gameId,
+    userId,
     isWishlist
   );
   return library;
