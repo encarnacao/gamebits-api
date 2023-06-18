@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import errors from "@/errors";
 import userRepository from "@/repositories/userRepository";
 import { SignInBody } from "@/protocols";
-import { formatUser } from "@/helpers/user-format-helper";
+import { formatUser } from "@/helpers";
 
 async function createUser(user: Prisma.usersCreateInput) {
   const hashedPassword = bcrypt.hashSync(user.password, 10);

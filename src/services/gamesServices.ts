@@ -1,5 +1,5 @@
 import { config } from "@/config/igdb-config";
-import { formatResponse } from "@/helpers/igdb-format-helper";
+import { formatResponse } from "@/helpers";
 import gamesRepository from "@/repositories/gameRepository";
 import errors from "@/errors";
 
