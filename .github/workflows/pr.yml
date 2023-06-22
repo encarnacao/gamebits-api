@@ -12,10 +12,11 @@ jobs:
           envkey_POSTGRES_USER: "postgres"
           envkey_POSTGRES_PASSWORD: "postgres"
           envkey_POSTGRES_DB: "gamebits_test"
-          envkey_IGDB_CLIENT_ID: ${{ secret.IGDB_CLIENT_ID }}
-          envkey_IGDB_TOKEN: ${{ secret.IGDB_TOKEN }}}
+          envkey_IGDB_CLIENT_ID: ${{ secrets.IGDB_CLIENT_ID }}
+          envkey_IGDB_TOKEN: ${{ secrets.IGDB_TOKEN }}
           envkey_DATABASE_URL: "postgresql://postgres:postgres@pgdb:5432/students_live"
-          directory: back-end
+          directory: ./
           file_name: .env.test
+          fail_on_empty: true
       - name: Run tests
         run: docker-compose -f docker-compose-test.yml run node_app npm run test

@@ -5,22 +5,18 @@
   "main": "index.js",
   "scripts": {
     "build": "tspc -p tsconfig.build.json",
-    "migrate": "prisma migrate deploy",
+    "prisma:migrate:deploy": "prisma migrate deploy",
     "generate": "prisma generate",
     "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
-    "dev:pull": "npm run dev:load-envs prisma db pull",
     "dev:generate": "npm run dev:load-envs prisma generate",
     "dev:migrate": "npm run dev:load-envs prisma migrate dev --name init",
-    "dev:seed": "npm run dev:load-envs prisma db seed",
     "dev:load-envs": "dotenv -e .env.development",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand",
     "test:coverage": "cross-env NODE_ENV=test jest --passWithNoTests --runInBand --coverage --collectCoverageFrom='./src/**'",
     "test:load-envs": "dotenv -e .env.test",
     "test:seed": "npm run test:load-envs prisma db seed",
     "test:migration:run": "npm run test:load-envs prisma migrate deploy",
-    "test:migration:generate": "npm run test:load-envs prisma migrate dev",
-    "test:watch": "cross-env NODE_ENV=test jest --watch --passWithNoTests --runInBand",
-    "start": "npm run migrate && npm run generate && node dist/src/server.js"
+    "start": "npm run prisma:migrate:deploy && node dist/server.js"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
