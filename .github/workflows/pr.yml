@@ -14,7 +14,8 @@ jobs:
           envkey_POSTGRES_DB: "gamebits_test"
           envkey_IGDB_CLIENT_ID: ${{ secrets.IGDB_CLIENT_ID }}
           envkey_IGDB_TOKEN: ${{ secrets.IGDB_TOKEN }}
-          envkey_DATABASE_URL: "postgresql://postgres:postgres@pgdb:5432/students_live"
+          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_DATABASE_URL: "postgresql://postgres:postgres@pgdb:5432/gamebits_test"
           directory: ./
           file_name: .env.test
           fail_on_empty: true
