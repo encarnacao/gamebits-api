@@ -1,9 +1,5 @@
 import { Router } from "express";
-import {
-  validateBody,
-  validateParams,
-  validateQuery,
-} from "../middlewares/validateSchema";
+import { validateBody, validateQuery } from "../middlewares/validateSchema";
 import {
   userQuerySchema,
   userSchema,
@@ -13,13 +9,11 @@ import userMiddleware from "@/middlewares/userMiddleware";
 import {
   createUser,
   findAllUsers,
-  findUser,
   findUsername,
   findUsers,
   getMe,
   signIn,
 } from "@/controllers/userController";
-import { paramsSchema } from "@/schemas/genericSchemas";
 import validateCredentials from "@/middlewares/authMiddleware";
 
 const usersRouter = Router();
@@ -31,10 +25,9 @@ usersRouter
     createUser
   )
   .post("/signin", validateBody(userSignInSchema), signIn)
-  .get("/id/:id", validateParams(paramsSchema), findUser)
   .get("/search", validateQuery(userQuerySchema), findUsers)
   .get("/all", findAllUsers)
   .get("/me", validateCredentials, getMe)
-  .get("/u/:username", findUsername);
+  .get("/u/:username", userMiddleware.checkUserCredentials, findUsername);
 
 export default usersRouter;
