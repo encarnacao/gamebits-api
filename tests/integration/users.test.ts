@@ -4,6 +4,7 @@ import supertest from "supertest";
 import app, { init } from "@/app";
 import { cleanDatabase } from "../helpers";
 import { createManyUsers, createUser } from "../factories/";
+import jwt from "jsonwebtoken";
 
 beforeAll(async () => {
   await init();
@@ -166,7 +167,9 @@ describe("GET /users/all", () => {
 
 describe("GET /users/search?username=", () => {
   it("should return 200 and empty array if no users are found", async () => {
-    const response = await server.get("/users/search?username=invalid-username");
+    const response = await server.get(
+      "/users/search?username=invalid-username"
+    );
     expect(response.status).toBe(httpStatus.OK);
     expect(response.body).toEqual([]);
   });
@@ -196,5 +199,49 @@ describe("GET /users/search?username=", () => {
         following: 0,
       },
     ]);
+  });
+});
+
+describe("GET /users/u/:username", () => {
+  it("should return 404 if user is not found", async () => {
+    const response = await server.get(`/users/u/${faker.lorem.word()}`);
+    expect(response.status).toBe(httpStatus.NOT_FOUND);
+  });
+  it("should return 200 if user is found", async () => {
+    const user = await createUser();
+    const response = await server.get(`/users/u/${user.username}`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual({
+      id: user.id,
+      username: user.username,
+      imageUrl: user.image_url,
+      followers: 0,
+      following: 0,
+    });
+  });
+});
+
+describe("GET /users/me", () => {
+  it("should return 401 if no token is provided", async () => {
+    const response = await server.get("/users/me");
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  it("should return 401 if token is invalid", async () => {
+    const token = faker.lorem.word();
+    const response = await server.get("/users/me").set("Authorization", token);
+    expect(response.status).toBe(httpStatus.UNAUTHORIZED);
+  });
+  it("should return 200 and user if token is valid", async () => {
+    const user = await createUser();
+    const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
+    const response = await server.get("/users/me").set("Authorization", token);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual({
+      id: user.id,
+      username: user.username,
+      imageUrl: user.image_url,
+      followers: 0,
+      following: 0,
+    });
   });
 });
