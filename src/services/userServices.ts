@@ -45,10 +45,20 @@ async function findAllUsers() {
   return users;
 }
 
+async function getUserByUsername(username: string) {
+  const search = await userRepository.findUsername(username);
+  if (!search) {
+    throw errors.notFoundError();
+  }
+  const user = formatUser(search);
+  return user;
+}
+
 export default {
   createUser,
   getUserByEmail,
   getUserById,
   findUsersByUsername,
   findAllUsers,
+  getUserByUsername,
 };

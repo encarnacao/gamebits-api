@@ -14,10 +14,13 @@ import {
   createUser,
   findAllUsers,
   findUser,
+  findUsername,
   findUsers,
+  getMe,
   signIn,
 } from "@/controllers/userController";
 import { paramsSchema } from "@/schemas/genericSchemas";
+import validateCredentials from "@/middlewares/authMiddleware";
 
 const usersRouter = Router();
 usersRouter
@@ -30,6 +33,8 @@ usersRouter
   .post("/signin", validateBody(userSignInSchema), signIn)
   .get("/id/:id", validateParams(paramsSchema), findUser)
   .get("/search", validateQuery(userQuerySchema), findUsers)
-  .get("/all", findAllUsers);
+  .get("/all", findAllUsers)
+  .get("/me", validateCredentials, getMe)
+  .get("/u/:username", findUsername);
 
 export default usersRouter;
