@@ -27,7 +27,7 @@ async function findUserById(id: number) {
   });
 }
 
-async function findUsersByUsername(username: string) {
+async function findUsernamePartial(username: string) {
   return await prisma.users.findMany({
     where: {
       username: {
@@ -66,7 +66,7 @@ export default {
   createUser,
   findUser,
   findUserById,
-  findUsersByUsername,
+  findUsernamePartial,
   findAllUsers,
   findUsername,
 };

@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 import supertest from "supertest";
 import app, { init } from "@/app";
 import { cleanDatabase } from "../helpers";
-import { createManyUsers, createUser } from "../factories/";
+import { createFollow, createManyUsers, createUser } from "../factories/";
 import jwt from "jsonwebtoken";
 
 beforeAll(async () => {
@@ -120,29 +120,6 @@ describe("POST /users/signin", () => {
   });
 });
 
-describe("GET /users/id/:id", () => {
-  it("should return 404 if user is not found", async () => {
-    const response = await server.get(`/users/id/${faker.datatype.number()}`);
-    expect(response.status).toBe(httpStatus.NOT_FOUND);
-  });
-  it("should return 422 if id is invalid", async () => {
-    const response = await server.get("/users/id/invalid-id");
-    expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
-  });
-  it("should return 200 if user is found", async () => {
-    const user = await createUser();
-    const response = await server.get(`/users/id/${user.id}`);
-    expect(response.status).toBe(httpStatus.OK);
-    expect(response.body).toEqual({
-      id: user.id,
-      username: user.username,
-      imageUrl: user.image_url,
-      followers: 0,
-      following: 0,
-    });
-  });
-});
-
 describe("GET /users/all", () => {
   it("should return 200 and empty array if no users are found", async () => {
     const response = await server.get("/users/all");
@@ -217,6 +194,43 @@ describe("GET /users/u/:username", () => {
       imageUrl: user.image_url,
       followers: 0,
       following: 0,
+      followedByUser: false,
+    });
+  });
+  it("should return 200 and followedByUser=true if user is found and is followed by user", async () => {
+    const firstUser = await createUser();
+    const secondUser = await createUser();
+    await createFollow(firstUser.id, secondUser.id);
+    const token = jwt.sign({ email: firstUser.email }, process.env.JWT_SECRET);
+    const response = await server
+      .get(`/users/u/${secondUser.username}`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual({
+      id: secondUser.id,
+      username: secondUser.username,
+      imageUrl: secondUser.image_url,
+      followers: 1,
+      following: 0,
+      followedByUser: true,
+    });
+  });
+  it("should return 200 and followedByUser=false if token is invalid", async () => {
+    const firstUser = await createUser();
+    const secondUser = await createUser();
+    await createFollow(firstUser.id, secondUser.id);
+    const token = faker.lorem.word();
+    const response = await server
+      .get(`/users/u/${secondUser.username}`)
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(httpStatus.OK);
+    expect(response.body).toEqual({
+      id: secondUser.id,
+      username: secondUser.username,
+      imageUrl: secondUser.image_url,
+      followers: 1,
+      following: 0,
+      followedByUser: false,
     });
   });
 });

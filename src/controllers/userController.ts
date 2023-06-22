@@ -28,20 +28,10 @@ async function signIn(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function findUser(req: Request, res: Response, next: NextFunction) {
-  const { id } = req.params;
-  try {
-    const user = await userServices.getUserById(Number(id));
-    res.send(user);
-  } catch (err) {
-    next(err);
-  }
-}
-
 async function findUsers(req: Request, res: Response, next: NextFunction) {
   const { username } = req.query as Pick<UserParams, "username">;
   try {
-    const users = await userServices.findUsersByUsername(username);
+    const users = await userServices.findUsernamePartial(username);
     res.send(users);
   } catch (err) {
     next(err);
@@ -60,7 +50,8 @@ async function findAllUsers(req: Request, res: Response, next: NextFunction) {
 async function getMe(req: Request, res: Response, next: NextFunction) {
   const user: users = res.locals.user;
   try {
-    const userData = await userServices.getUserById(user.id);
+    const userData = await userServices.getUserByUsername(user.username);
+    delete userData.followedByUser;
     res.send(userData);
   } catch (err) {
     next(err);
@@ -69,20 +60,15 @@ async function getMe(req: Request, res: Response, next: NextFunction) {
 
 async function findUsername(req: Request, res: Response, next: NextFunction) {
   const { username } = req.params;
+  const user: users = res.locals.user;
   try {
-    const user = await userServices.getUserByUsername(username);
-    res.send(user);
+    const userId = user?.id ? user.id : undefined;
+    const userData = await userServices.getUserByUsername(username, userId);
+    if (userId === userData.id) delete userData.followedByUser;
+    res.send(userData);
   } catch (err) {
     next(err);
   }
 }
 
-export {
-  createUser,
-  signIn,
-  findUser,
-  findUsers,
-  findAllUsers,
-  getMe,
-  findUsername,
-};
+export { createUser, signIn, findUsers, findAllUsers, getMe, findUsername };

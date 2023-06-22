@@ -24,41 +24,39 @@ async function getUserByEmail(body: SignInBody) {
   return user;
 }
 
-async function getUserById(id: number) {
-  const search = await userRepository.findUserById(id);
-  if (!search) {
-    throw errors.notFoundError();
-  }
-  const user = formatUser(search);
-  return user;
-}
-
-async function findUsersByUsername(username: string) {
-  const search = await userRepository.findUsersByUsername(username);
-  const users = search.map((user) => formatUser(user));
+async function findUsernamePartial(username: string) {
+  const search = await userRepository.findUsernamePartial(username);
+  const users = search.map((user) => {
+    const formattedUser = formatUser(user);
+    delete formattedUser.followedByUser;
+    return formattedUser;
+  });
   return users;
 }
 
 async function findAllUsers() {
   const search = await userRepository.findAllUsers();
-  const users = search.map((user) => formatUser(user));
+  const users = search.map((user) => {
+    const formattedUser = formatUser(user);
+    delete formattedUser.followedByUser;
+    return formattedUser;
+  });
   return users;
 }
 
-async function getUserByUsername(username: string) {
+async function getUserByUsername(username: string, id?: number) {
   const search = await userRepository.findUsername(username);
   if (!search) {
     throw errors.notFoundError();
   }
-  const user = formatUser(search);
+  const user = formatUser(search, id);
   return user;
 }
 
 export default {
   createUser,
   getUserByEmail,
-  getUserById,
-  findUsersByUsername,
+  findUsernamePartial,
   findAllUsers,
   getUserByUsername,
 };
