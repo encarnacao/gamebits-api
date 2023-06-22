@@ -1,0 +1,31 @@
+services:
+  pgdb:
+    image: postgres
+    container_name: pgdb
+    restart: always
+    ports:
+      - 5433:5432
+    env_file:
+      - .env
+    volumes:
+      - pg:/var/lib/postgresql/data
+    networks:
+      - my-network
+
+  node_app:
+    build: .
+    container_name: node_app
+    restart: always
+    ports:
+      - 5000:5000
+    depends_on:
+      - pgdb
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  pg:
