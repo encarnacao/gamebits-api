@@ -50,10 +50,23 @@ async function findAllUsers() {
   });
 }
 
+async function findUsername(username: string) {
+  return await prisma.users.findUnique({
+    where: {
+      username,
+    },
+    include: {
+      follows_follows_followedTousers: true,
+      follows_follows_followingTousers: true,
+    },
+  });
+}
+
 export default {
   createUser,
   findUser,
   findUserById,
   findUsersByUsername,
   findAllUsers,
+  findUsername,
 };

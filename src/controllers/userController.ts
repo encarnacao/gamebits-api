@@ -4,6 +4,7 @@ import userServices from "@/services/userServices";
 import jwt from "jsonwebtoken";
 import { SignInBody, UserParams } from "@/protocols";
 import httpStatus from "http-status";
+import { users } from "@prisma/client";
 
 async function createUser(req: Request, res: Response, next: NextFunction) {
   const userData = req.body as UserParams;
@@ -56,4 +57,32 @@ async function findAllUsers(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { createUser, signIn, findUser, findUsers, findAllUsers };
+async function getMe(req: Request, res: Response, next: NextFunction) {
+  const user: users = res.locals.user;
+  try {
+    const userData = await userServices.getUserById(user.id);
+    res.send(userData);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function findUsername(req: Request, res: Response, next: NextFunction) {
+  const { username } = req.params;
+  try {
+    const user = await userServices.getUserByUsername(username);
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export {
+  createUser,
+  signIn,
+  findUser,
+  findUsers,
+  findAllUsers,
+  getMe,
+  findUsername,
+};
