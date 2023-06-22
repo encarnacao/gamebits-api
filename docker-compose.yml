@@ -6,7 +6,7 @@ services:
     ports:
       - 5433:5432
     env_file:
-      - .env.test
+      - .env
     volumes:
       - pg:/var/lib/postgresql/data
     networks:
