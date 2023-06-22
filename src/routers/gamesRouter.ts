@@ -9,5 +9,4 @@ const gamesRouter = Router();
 gamesRouter
   .post("/", validateQuery(searchSchema), searchGame)
   .get("/:id", validateParams(paramsSchema), getGameById);
-
 export default gamesRouter;
