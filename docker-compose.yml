@@ -23,9 +23,32 @@ services:
     networks:
       - my-network
 
+  openssl:
+    build: ./openssl
+    volumes:
+      - ssl-certs:/certs
+    networks:
+      - my-network
+
+  nginx:
+    container_name: nginx_app
+    build: ./nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ssl-certs:/certs
+    depends_on:
+      - pgdb
+      - node_app
+      - openssl
+    networks:
+      - my-network
+
 networks:
   my-network:
     driver: bridge
 
 volumes:
   pg:
+  ssl-certs:
