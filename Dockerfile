@@ -5,7 +5,7 @@ WORKDIR /usr/src/
 
 # Install app dependencies
 COPY . .
-EXPOSE 5000
+EXPOSE 80
 RUN npm i
 RUN npm run build
 CMD ["npm", "start"]
