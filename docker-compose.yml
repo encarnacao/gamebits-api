@@ -17,31 +17,9 @@ services:
     container_name: node_app
     restart: always
     ports:
-      - 5000:5000
-    depends_on:
-      - pgdb
-    networks:
-      - my-network
-
-  openssl:
-    build: ./openssl
-    volumes:
-      - ssl-certs:/certs
-    networks:
-      - my-network
-
-  nginx:
-    container_name: nginx_app
-    build: ./nginx
-    ports:
       - 80:80
-      - 443:443
-    volumes:
-      - ssl-certs:/certs
     depends_on:
       - pgdb
-      - node_app
-      - openssl
     networks:
       - my-network
 
@@ -51,4 +29,3 @@ networks:
 
 volumes:
   pg:
-  ssl-certs:

@@ -4,3 +4,4 @@
 .env.development
 /nginx/
 /openssl/
+/tests/
