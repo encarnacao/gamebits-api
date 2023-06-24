@@ -374,6 +374,7 @@ describe("GET /libraries/:id", () => {
         id: library.id,
         game: {
           id: game.id,
+          igdb_id: game.igdb_id,
           name: game.name,
           cover: game.cover_url,
           originalReleaseDate: game.original_release_date.toISOString(),
@@ -412,6 +413,7 @@ describe("GET /libraries/wishlist/:id", () => {
         id: library.id,
         game: {
           id: game.id,
+          igdb_id: game.igdb_id,
           name: game.name,
           cover: game.cover_url,
           originalReleaseDate: game.original_release_date.toISOString(),

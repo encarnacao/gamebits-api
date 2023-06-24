@@ -6,6 +6,7 @@ export function formatLibrary(library: (libraries & { games: games })[]) {
       id: entry.id,
       game: {
         id: entry.games.id,
+        igdb_id: entry.games.igdb_id,
         name: entry.games.name,
         cover: entry.games.cover_url,
         originalReleaseDate: entry.games.original_release_date,
