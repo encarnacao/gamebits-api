@@ -34,6 +34,7 @@ describe("POST /follows", () => {
       const response = await server
         .post(`/follows/${faker.lorem.word()}`)
         .set("Authorization", `Bearer ${token}`);
+      expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
     });
     it("should return status 404 when user is not found", async () => {
       const user = await createUser();
