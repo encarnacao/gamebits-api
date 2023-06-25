@@ -1,5 +1,5 @@
 import { config } from "@/config/igdb-config";
-import { formatResponse } from "@/helpers";
+import { formatGameResponse, formatResponse } from "@/helpers";
 import gamesRepository from "@/repositories/gameRepository";
 import errors from "@/errors";
 
@@ -25,7 +25,7 @@ export async function searchGame(gameName: string) {
 export async function getGameByIGDBId(igdb_id: number) {
   try {
     const game = await gamesRepository.getGameByIGDBId(igdb_id);
-    return game;
+    return formatGameResponse(game);
   } catch (err) {
     throw errors.notFoundError();
   }

@@ -1,4 +1,10 @@
-import { GameResponse, igdbResponse, singleGameResponse } from "@/protocols";
+import {
+  GameEntity,
+  GameResponse,
+  igdbResponse,
+  singleGameResponse,
+} from "@/protocols";
+import { games } from "@prisma/client";
 
 export function formatResponse(response: igdbResponse[]) {
   return response.map((game) => {
@@ -24,7 +30,7 @@ export function formatResponse(response: igdbResponse[]) {
   });
 }
 
-export function formatSingleGame(response: singleGameResponse[]): GameResponse {
+export function formatGameEntry(response: singleGameResponse[]): GameEntity {
   const { id, cover, name, first_release_date, platforms, genres } =
     response[0];
   const platformNames =
@@ -41,11 +47,25 @@ export function formatSingleGame(response: singleGameResponse[]): GameResponse {
     ? genres.map((genre) => genre.name).join(", ")
     : "Não informado";
   return {
-    igdbId: id,
-    coverUrl: coverUrl,
+    igdb_id: id,
+    cover_url: coverUrl,
     name,
-    originalReleaseDate: releaseDate,
+    original_release_date: releaseDate,
     platforms: platformNames,
     genres: genreNames,
+  };
+}
+
+export function formatGameResponse(response: games): GameResponse {
+  return {
+    id: response.id,
+    igdbId: response.igdb_id,
+    coverUrl: response.cover_url,
+    name: response.name,
+    originalReleaseDate: response.original_release_date,
+    platforms: response.platforms,
+    genres: response.genres,
+    createdAt: response.created_at,
+    updatedAt: response.updated_at,
   };
 }

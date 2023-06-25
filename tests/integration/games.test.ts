@@ -37,12 +37,11 @@ describe("GET /games/:id", () => {
     expect(response.status).toBe(httpStatus.UNPROCESSABLE_ENTITY);
   });
   describe("when id is valid", () => {
-    it("should not add game to database if unreleased", async () => {
+    it("should not add game to database if unreleased and return 404", async () => {
       const response = await server.get("/games/7345");
       const game = await prisma.games.findFirst({ where: { igdb_id: 7345 } });
       expect(game).toBeNull();
-      expect(response.status).toBe(httpStatus.OK);
-      expect(response.body.id).toBe(-1);
+      expect(response.status).toBe(httpStatus.NOT_FOUND);
     });
     it("should add game to database if released", async () => {
       const response = await server.get("/games/222095");

@@ -1,9 +1,9 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/config";
 import { config } from "@/config/igdb-config";
-import { formatSingleGame } from "@/helpers/igdb-format-helper";
+import { formatGameEntry } from "@/helpers/igdb-format-helper";
 import errors from "@/errors";
-import { GameResponse } from "@/protocols";
+import { GameEntity, GameResponse } from "@/protocols";
 
 async function getGameByIGDBId(igdb_id: number) {
   let search = await prisma.games.findFirst({
@@ -13,10 +13,10 @@ async function getGameByIGDBId(igdb_id: number) {
   });
   if (!search) {
     const game = await searchIGDB(igdb_id);
-    if (game.originalReleaseDate !== "Não lançado") {
+    if (game.original_release_date !== "Não lançado") {
       search = await createGameEntry(game);
     } else {
-      return { ...game, id: -1 };
+      throw errors.notFoundError();
     }
   }
   return search;
@@ -36,7 +36,7 @@ async function searchIGDB(igdb_id: number) {
     });
     const responseBody = await response.json();
     if (responseBody.length === 0) throw errors.notFoundError();
-    const game = formatSingleGame(responseBody);
+    const game = formatGameEntry(responseBody);
     return game;
   } catch {
     throw errors.notFoundError();
@@ -50,16 +50,9 @@ async function searchById(id: number) {
   return game;
 }
 
-async function createGameEntry(game: GameResponse) {
+async function createGameEntry(game: GameEntity) {
   const gameEntry = await prisma.games.create({
-    data: {
-      igdb_id: game.igdbId,
-      cover_url: game.coverUrl,
-      name: game.name,
-      original_release_date: game.originalReleaseDate,
-      platforms: game.platforms,
-      genres: game.genres,
-    },
+    data: game,
   });
   return gameEntry;
 }
