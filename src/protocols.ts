@@ -60,7 +60,7 @@ export interface LibraryUpdate {
 }
 
 export interface ReviewBody {
-  game_id: number;
+  gameId: number;
   text: string;
   rating: number;
 }
@@ -70,15 +70,14 @@ export interface VotingBody {
   upVote: boolean;
 }
 
-export type GameEntity = Pick<
-  Prisma.gamesCreateInput,
-  | "igdb_id"
-  | "name"
-  | "cover_url"
-  | "original_release_date"
-  | "genres"
-  | "platforms"
->;
+export interface GameResponse {
+  igdbId: number;
+  coverUrl: string;
+  name: string;
+  originalReleaseDate: Date | string;
+  genres: string;
+  platforms: string;
+}
 
 export type UnformattedReviews = reviews & {
   users: {

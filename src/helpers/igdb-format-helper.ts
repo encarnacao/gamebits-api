@@ -1,4 +1,4 @@
-import { GameEntity, igdbResponse, singleGameResponse } from "@/protocols";
+import { GameResponse, igdbResponse, singleGameResponse } from "@/protocols";
 
 export function formatResponse(response: igdbResponse[]) {
   return response.map((game) => {
@@ -24,7 +24,7 @@ export function formatResponse(response: igdbResponse[]) {
   });
 }
 
-export function formatSingleGame(response: singleGameResponse[]): GameEntity {
+export function formatSingleGame(response: singleGameResponse[]): GameResponse {
   const { id, cover, name, first_release_date, platforms, genres } =
     response[0];
   const platformNames =
@@ -41,10 +41,10 @@ export function formatSingleGame(response: singleGameResponse[]): GameEntity {
     ? genres.map((genre) => genre.name).join(", ")
     : "Não informado";
   return {
-    igdb_id: id,
-    cover_url: coverUrl,
+    igdbId: id,
+    coverUrl: coverUrl,
     name,
-    original_release_date: releaseDate,
+    originalReleaseDate: releaseDate,
     platforms: platformNames,
     genres: genreNames,
   };

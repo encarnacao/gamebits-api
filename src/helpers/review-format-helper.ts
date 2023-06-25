@@ -43,6 +43,7 @@ export function formatUserReviews(reviews: UnformattedUserReviews[]) {
       rating: Number(review.rating),
       game: {
         id: review.games.id,
+        igdbId: review.games.igdb_id,
         name: review.games.name,
         coverUrl: review.games.cover_url,
         originalReleaseDate: review.games.original_release_date,

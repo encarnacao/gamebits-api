@@ -374,7 +374,7 @@ describe("GET /libraries/:id", () => {
         id: library.id,
         game: {
           id: game.id,
-          igdb_id: game.igdb_id,
+          igdbId: game.igdb_id,
           name: game.name,
           cover: game.cover_url,
           originalReleaseDate: game.original_release_date.toISOString(),
@@ -384,9 +384,9 @@ describe("GET /libraries/:id", () => {
         finished: library.finished,
         platinum: library.platinum,
         wishlist: library.wishlist,
-        completion_time: library.completion_time,
-        created_at: library.created_at.toISOString(),
-        updated_at: library.updated_at.toISOString(),
+        completionTime: library.completion_time,
+        createdAt: library.created_at.toISOString(),
+        updatedAt: library.updated_at.toISOString(),
       },
     ]);
   });
@@ -413,7 +413,7 @@ describe("GET /libraries/wishlist/:id", () => {
         id: library.id,
         game: {
           id: game.id,
-          igdb_id: game.igdb_id,
+          igdbId: game.igdb_id,
           name: game.name,
           cover: game.cover_url,
           originalReleaseDate: game.original_release_date.toISOString(),
@@ -423,9 +423,9 @@ describe("GET /libraries/wishlist/:id", () => {
         finished: library.finished,
         platinum: library.platinum,
         wishlist: library.wishlist,
-        completion_time: library.completion_time,
-        created_at: library.created_at.toISOString(),
-        updated_at: library.updated_at.toISOString(),
+        completionTime: library.completion_time,
+        createdAt: library.created_at.toISOString(),
+        updatedAt: library.updated_at.toISOString(),
       },
     ]);
   });

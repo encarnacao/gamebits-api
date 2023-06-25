@@ -151,7 +151,7 @@ describe("GET /follows/:id/followers", () => {
       {
         id: user.id,
         username: user.username,
-        image_url: user.image_url,
+        imageUrl: user.image_url,
       },
     ]);
   });
@@ -185,7 +185,7 @@ describe("GET /follows/:id/following", () => {
       {
         id: followed.id,
         username: followed.username,
-        image_url: followed.image_url,
+        imageUrl: followed.image_url,
       },
     ]);
   });
