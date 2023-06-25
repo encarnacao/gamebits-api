@@ -17,7 +17,7 @@ const server = supertest(app);
 
 describe("POST /reviews", () => {
   const generateValidBody = (gameId: number) => ({
-    game_id: gameId,
+    gameId: gameId,
     rating: faker.datatype.number({ min: 0, max: 5, precision: 0.5 }),
     text: faker.lorem.paragraph(),
   });
@@ -35,7 +35,7 @@ describe("POST /reviews", () => {
       const user = await createUser();
       const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET);
       const body = { [faker.lorem.word()]: faker.lorem.word() };
-      delete body.game_id;
+      delete body.gameId;
       const response = await server
         .post("/reviews")
         .set("Authorization", `Bearer ${token}`)
@@ -176,6 +176,7 @@ describe("GET /reviews/user/:id", () => {
         text: review.text,
         game: {
           id: game.id,
+          igdbId: game.igdb_id,
           name: game.name,
           coverUrl: game.cover_url,
           originalReleaseDate: game.original_release_date.toISOString(),

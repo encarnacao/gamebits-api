@@ -31,11 +31,11 @@ async function validateGame(gameId: number) {
 }
 
 async function createReview(userId: number, body: ReviewBody) {
-  await validateGame(body.game_id);
-  await validateReview(userId, body.game_id);
+  await validateGame(body.gameId);
+  await validateReview(userId, body.gameId);
   const review = await reviewRepository.createReview(
     userId,
-    body.game_id,
+    body.gameId,
     body.text,
     body.rating
   );

@@ -6,7 +6,7 @@ export function formatLibrary(library: (libraries & { games: games })[]) {
       id: entry.id,
       game: {
         id: entry.games.id,
-        igdb_id: entry.games.igdb_id,
+        igdbId: entry.games.igdb_id,
         name: entry.games.name,
         cover: entry.games.cover_url,
         originalReleaseDate: entry.games.original_release_date,
@@ -16,9 +16,9 @@ export function formatLibrary(library: (libraries & { games: games })[]) {
       finished: entry.finished,
       wishlist: entry.wishlist,
       platinum: entry.platinum,
-      completion_time: entry.completion_time,
-      created_at: entry.created_at,
-      updated_at: entry.updated_at,
+      completionTime: entry.completion_time,
+      createdAt: entry.created_at,
+      updatedAt: entry.updated_at,
     };
   });
   return formattedLibrary;

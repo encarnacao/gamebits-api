@@ -38,7 +38,7 @@ async function getFollowers(userId: number) {
   const followers = search.map((follow) => ({
     id: follow.users_follows_followingTousers.id,
     username: follow.users_follows_followingTousers.username,
-    image_url: follow.users_follows_followingTousers.image_url,
+    imageUrl: follow.users_follows_followingTousers.image_url,
   }));
   return followers;
 }
@@ -51,7 +51,7 @@ async function getFollowings(userId: number) {
   const following = search.map((follow) => ({
     id: follow.users_follows_followedTousers.id,
     username: follow.users_follows_followedTousers.username,
-    image_url: follow.users_follows_followedTousers.image_url,
+    imageUrl: follow.users_follows_followedTousers.image_url,
   }));
   return following;
 }
