@@ -1,31 +1,44 @@
 services:
-  pgdb:
+  postgres:
     image: postgres
-    container_name: pgdb
+    container_name: postgres
     restart: always
     ports:
       - 5433:5432
     env_file:
       - .env
     volumes:
-      - pg:/var/lib/postgresql/data
-    networks:
-      - my-network
+      - postgres-volume:/var/lib/postgresql/data
 
-  node_app:
+  node:
+    container_name: node
     build: .
-    container_name: node_app
     restart: always
     ports:
-      - 80:80
+      - 5000:5000
     depends_on:
-      - pgdb
-    networks:
-      - my-network
+      - postgres
+    env_file:
+      - .env
 
-networks:
-  my-network:
-    driver: bridge
+  openssl:
+    build: ./openssl
+    volumes:
+      - ssl-certs:/certs
+
+  nginx:
+    container_name: nginx_app
+    build: ./nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ssl-certs:/certs
+    depends_on:
+      - postgres
+      - node
+      - openssl
 
 volumes:
-  pg:
+  postgres-volume:
+  ssl-certs:
