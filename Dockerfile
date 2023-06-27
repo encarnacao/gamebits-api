@@ -1,11 +1,12 @@
-FROM node
+FROM node:20.3.0
 
-# Create app directory
-WORKDIR /usr/src/
+WORKDIR /src/usr/
 
-# Install app dependencies
 COPY . .
-EXPOSE 80
+
+EXPOSE 5000
+
 RUN npm i
 RUN npm run build
+
 CMD ["npm", "start"]
