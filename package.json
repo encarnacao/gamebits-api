@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tspc -p tsconfig.build.json",
-    "vercel-build": "tspc -p tsconfig.build.json && npx prisma migrate deploy",
+    "vercel-build": "npx prisma migrate deploy",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "generate": "prisma generate",
     "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
