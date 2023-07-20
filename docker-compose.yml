@@ -21,24 +21,6 @@ services:
     env_file:
       - .env
 
-  openssl:
-    build: ./openssl
-    volumes:
-      - ssl-certs:/certs
-
-  nginx:
-    container_name: nginx_app
-    build: ./nginx
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ssl-certs:/certs
-    depends_on:
-      - postgres
-      - node
-      - openssl
-
 volumes:
   postgres-volume:
-  ssl-certs:
+
